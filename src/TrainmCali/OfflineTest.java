@@ -512,7 +512,6 @@ public class OfflineTest {
 									areasERMSNTarget.get((int) (areasERMSNTarget.size()*0.9)+1))/2;
 						}
 
-
 					}
 
 
