@@ -3,28 +3,25 @@ package classificador;
 public class NewFeatures {
 
 		//MCALI
-		private double circleR, rectR1, rectR2, rectR3, triR3, aspectR, fillingR;
+		private double circleR, rectR1, rectR2, rectR3, rectR4, triR3, aspectR;
 		// Extreme Quad
 		private double eqR1;
 		// Movements
 		private double movementY;
 		// Intersections
-		private double chR2;
+		private double chR2, chR3;
 		// Bounding box
 		private double bbchR;
-		// Quadrant
-		private double quad1FillR, quad2FillR, quad3FillR, quad4FillR;
 
 		//Nova feature RMS 
 		private double rms;
 		
 		public NewFeatures() {
-			circleR = rectR1 = rectR2 = rectR3 = triR3 = aspectR = fillingR = 0;
+			circleR = rectR1 = rectR2 = rectR3 = rectR4 = triR3 = aspectR = 0;
 			eqR1 = 0;
 			movementY = 0;
 			chR2 = 0;
 			bbchR = 0; 
-			quad1FillR = quad2FillR = quad3FillR = quad4FillR = 0;
 			rms = 0;
 		}
 		
@@ -59,6 +56,14 @@ public class NewFeatures {
 		public void setRectR3(double rectR3) {
 			this.rectR3 = rectR3;
 		}
+		
+		public double getRectR4() {
+			return rectR4;
+		}
+
+		public void setRectR4(double rectR4) {
+			this.rectR4 = rectR4;
+		}
 
 		public double getTriR3() {
 			return triR3;
@@ -74,14 +79,6 @@ public class NewFeatures {
 
 		public void setAspectR(double aspectR) {
 			this.aspectR = aspectR;
-		}
-
-		public double getFillingR() {
-			return fillingR;
-		}
-
-		public void setFillingR(double fillingR) {
-			this.fillingR = fillingR;
 		}
 
 		public double getEqR1() {
@@ -108,44 +105,20 @@ public class NewFeatures {
 			this.chR2 = chR2;
 		}
 		
+		public double getChR3() {
+			return chR3;
+		}
+
+		public void setChR3(double chR3) {
+			this.chR3 = chR3;
+		}
+		
 		public double getBbchR() {
 			return bbchR;
 		}
 
 		public void setBbchR(double bbchR) {
 			this.bbchR = bbchR;
-		}
-		
-		public double getQuad1FillR() {
-			return quad1FillR;
-		}
-
-		public void setQuad1FillR(double quad1FillR) {
-			this.quad1FillR = quad1FillR;
-		}
-
-		public double getQuad2FillR() {
-			return quad2FillR;
-		}
-
-		public void setQuad2FillR(double quad2FillR) {
-			this.quad2FillR = quad2FillR;
-		}
-
-		public double getQuad3FillR() {
-			return quad3FillR;
-		}
-
-		public void setQuad3FillR(double quad3FillR) {
-			this.quad3FillR = quad3FillR;
-		}
-
-		public double getQuad4FillR() {
-			return quad4FillR;
-		}
-
-		public void setQuad4FillR(double quad4FillR) {
-			this.quad4FillR = quad4FillR;
 		}
 		
 		//Nova feature adicionada

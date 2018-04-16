@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.functions.LibSVM;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.meta.LogitBoost;
 import weka.classifiers.meta.RandomSubSpace;
@@ -42,7 +43,7 @@ public class NewClassifying implements Serializable{
 			v.setClassifiers(new Classifier[]{new IBk(), rs, new NaiveBayes()});
 		}
 
-		setCurrentClassifier(v);
+		setCurrentClassifier(new LibSVM());
 		createTrainingInstances();
 		trainClassifier(training);
 	}
@@ -62,7 +63,7 @@ public class NewClassifying implements Serializable{
 			v.setClassifiers(new Classifier[]{new IBk(), rs, new NaiveBayes()});
 		}
 
-		setCurrentClassifier(v);
+		setCurrentClassifier(new LibSVM());
 	}
 
 	public void createTrainingInstances() {
@@ -90,28 +91,47 @@ public class NewClassifying implements Serializable{
 		currentClassifier = classifier;
 	}
 
-	public String classify(NewFeatures f) {
+	public String classify(NewFeatures f, int numFeatures) {
 		// Create empty instance 
 		Instance test = new DenseInstance(training.numAttributes());
 
 		// Setting attributes values
 		// Index 0 is the class which is not necessary for testing
-		test.setValue(1, f.getCircleR());
-		test.setValue(2, f.getRectR1());
-		test.setValue(3, f.getRectR2());
-		test.setValue(4, f.getRectR3());
-		test.setValue(5, f.getTriR3());
-		test.setValue(6, f.getAspectR());
-		test.setValue(7, f.getFillingR());
-		test.setValue(8, f.getEqR1());
-		test.setValue(9, f.getMovementY());
-		test.setValue(10, f.getChR2());
-		test.setValue(11, f.getBbchR());
-		test.setValue(12, f.getQuad1FillR());
-		test.setValue(13, f.getQuad2FillR());
-		test.setValue(14, f.getQuad3FillR());
-		test.setValue(15, f.getQuad4FillR());
-		test.setValue(16, f.getRMS());
+		if (numFeatures == 12){
+			test.setValue(1, f.getCircleR());
+			test.setValue(2, f.getRectR1());
+			test.setValue(3, f.getRectR2());
+			test.setValue(4, f.getRectR3());
+			test.setValue(5, f.getRectR4());
+			test.setValue(6, f.getTriR3());
+			test.setValue(7, f.getAspectR());
+			test.setValue(8, f.getEqR1());
+			test.setValue(9, f.getMovementY());
+			test.setValue(10, f.getChR2());
+			test.setValue(11, f.getBbchR());
+			//test.setValue(12, f.getRMS());
+		}else if (numFeatures == 11){
+			test.setValue(1, f.getCircleR());
+			test.setValue(2, f.getRectR2());
+			test.setValue(3, f.getRectR3());
+			test.setValue(4, f.getTriR3());
+			test.setValue(5, f.getAspectR());
+			test.setValue(6, f.getEqR1());
+			test.setValue(7, f.getMovementY());
+			test.setValue(8, f.getChR2());
+			test.setValue(9, f.getChR3());
+			test.setValue(10, f.getBbchR());
+			//test.setValue(11, f.getRMS());
+		}else if (numFeatures == 8){
+			test.setValue(1, f.getRectR2());
+			test.setValue(2, f.getAspectR());
+			test.setValue(3, f.getEqR1());
+			test.setValue(4, f.getMovementY());
+			test.setValue(5, f.getChR2());
+			test.setValue(6, f.getChR3());
+			test.setValue(7, f.getBbchR());
+			//test.setValue(8, f.getRMS());
+		}
 
 		// Setting the header of test to be the same as the training set
 		test.setDataset(training);
@@ -124,7 +144,7 @@ public class NewClassifying implements Serializable{
 			//				System.out.println(training.classAttribute().value((int) i) + ": " + results[i]);
 
 			// Single Result
-			
+
 			double prediction = currentClassifier.classifyInstance(test);
 			return training.classAttribute().value((int) prediction);
 

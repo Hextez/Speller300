@@ -317,8 +317,8 @@ public class NewGesture {
 			features.setRectR1(divide(chArea, erArea, true)); /// ---- Correlation weka
 			features.setRectR2(divide(chPerim, erPerim, true));/// ---- Correlation weka
 			features.setRectR3(divide(lqArea, erArea, true));
+			features.setRectR4(divide(lqArea, chArea, true));		 			
 			/*
-			  features.setRectR4(divide(lqArea, chArea, true));		 
 			features.setRectR5(divide(lqPerim, chPerim, true));
 			features.setTriR1(divide(ltArea, chArea, true));
 			features.setTriR2(divide(ltPerim, chPerim, true));
@@ -340,7 +340,7 @@ public class NewGesture {
 					features.setAspectR(divide(height, width, true));
 			}
 			
-			features.setFillingR(divide(getLength(), chPerim, false));  /// ---- Correlation weka
+			//features.setFillingR(divide(getLength(), chPerim, false));  /// ---- Correlation weka
 			//features.setEqR1(divide(eqPerim * eqPerim, eqArea, false));
 			features.setEqR1(divide(eqArea, eqPerim * eqPerim, true));  /// ---- Correlation weka
 			//features.setEqR2(divide(eqArea, chArea, true));
@@ -348,17 +348,17 @@ public class NewGesture {
 			
 			//features.setChR1(divide(intersectCH1.area(), chArea, true));
 			features.setChR2(divide(intersectCH2.area(), chArea, true)); /// ---- Correlation weka
-			//features.setChR3(divide(intersectCH2.area(), intersectCH1.area(), false));
+			features.setChR3(divide(intersectCH2.area(), intersectCH1.area(), false));
 			
 			features.setBbchR(divide(chArea, bbArea, true));  /// ---- Correlation weka
 			
-			calcQuadrantRatios();
+			//calcQuadrantRatios();
 		}
 		
 		public void calcMovement() {
 			double totalX = 0f, totalY = 0f;
 			for (Stroke s : strokes) {
-				int numPoints = s.getPoints().size() - 1;
+				int numPoints = s.getNumPoints() - 1;
 				List<Point> pts = s.getPoints();
 				for (int i = 0; i < numPoints; i++) {
 					totalX += Math.abs(pts.get(i).x - pts.get(i+1).x);
@@ -472,12 +472,12 @@ public class NewGesture {
 			}
 
 			double gestTotalLength = getLength();
-
+/*
 			features.setQuad1FillR(divide(gestQuad1TotalLength, gestTotalLength, true));  /// ---- Correlation weka
 			features.setQuad2FillR(divide(gestQuad2TotalLength, gestTotalLength, true)); /// ---- Correlation weka
 			features.setQuad3FillR(divide(gestQuad3TotalLength, gestTotalLength, true));/// ---- Correlation weka
 			features.setQuad4FillR(divide(gestQuad4TotalLength, gestTotalLength, true));/// ---- Correlation weka
-			
+			*/
 //			quad1CH = calcConvexHull(gestQuad1Pts);
 //			quad2CH = calcConvexHull(gestQuad2Pts);
 //			quad3CH = calcConvexHull(gestQuad3Pts);
@@ -1307,7 +1307,7 @@ public class NewGesture {
 		public void calcRMS(){
 			double sum = 0;
 			for (Stroke s : strokes) {
-				int numPoints = s.getPoints().size() - 1;
+				int numPoints = s.getNumPoints();
 				List<Point> pts = s.getPoints();
 				for (int i = 0; i < numPoints; i++) {
 					sum += (pts.get(i).y * pts.get(i).y);
