@@ -20,7 +20,7 @@ public class NewRecognizer {
 		classifier = new NewClassifying(classifierName, trainingFile);
 	}
 
-	public NewRecognizer(String classifierName, List<String> allClasses, int classTypes) {
+	public NewRecognizer(String classifierName, List<String> allClasses, int classTypes) throws Exception {
 		this.numAttributes = classTypes;
 		classifier = new NewClassifying(classifierName);
 
@@ -29,7 +29,7 @@ public class NewRecognizer {
 			fvClassVal.add(cls);
 
 		allAttributes = new ArrayList<Attribute>(numAttributes);
-		if (numAttributes == 12){
+		if (numAttributes == 15){
 			allAttributes.add(new Attribute("class", fvClassVal));
 			allAttributes.add(new Attribute("circleR"));
 			allAttributes.add(new Attribute("rectR1"));
@@ -42,21 +42,24 @@ public class NewRecognizer {
 			allAttributes.add(new Attribute("MovY"));
 			allAttributes.add(new Attribute("chR2"));
 			allAttributes.add(new Attribute("bbchR"));
-			//allAttributes.add(new Attribute("rms"));
-		}else if (numAttributes == 11){
+			allAttributes.add(new Attribute("astchAR"));
+			allAttributes.add(new Attribute("astchPR"));
+			allAttributes.add(new Attribute("rms"));
+		}else if (numAttributes == 13){
 			allAttributes.add(new Attribute("class", fvClassVal));
 			allAttributes.add(new Attribute("circleR"));
 			allAttributes.add(new Attribute("rectR2"));
 			allAttributes.add(new Attribute("rectR3"));
-			allAttributes.add(new Attribute("triR3"));
 			allAttributes.add(new Attribute("aspectR"));
 			allAttributes.add(new Attribute("eqR"));
 			allAttributes.add(new Attribute("MovY"));
 			allAttributes.add(new Attribute("chR2"));
 			allAttributes.add(new Attribute("chR3"));
 			allAttributes.add(new Attribute("bbchR"));
-			//allAttributes.add(new Attribute("rms"));
-		} else if (numAttributes == 8){
+			allAttributes.add(new Attribute("astchAR"));
+			allAttributes.add(new Attribute("astchPR"));
+			allAttributes.add(new Attribute("rms"));
+		} else if (numAttributes == 11){
 			allAttributes.add(new Attribute("class", fvClassVal));
 			allAttributes.add(new Attribute("rectR2"));
 			allAttributes.add(new Attribute("aspectR"));
@@ -65,7 +68,18 @@ public class NewRecognizer {
 			allAttributes.add(new Attribute("chR2"));
 			allAttributes.add(new Attribute("chR3"));
 			allAttributes.add(new Attribute("bbchR"));
-			//allAttributes.add(new Attribute("rms"));
+			allAttributes.add(new Attribute("astchAR"));
+			allAttributes.add(new Attribute("astchPR"));
+			allAttributes.add(new Attribute("rms"));
+		}else if (numAttributes == 8){
+			allAttributes.add(new Attribute("class", fvClassVal));
+			allAttributes.add(new Attribute("rectR2"));
+			allAttributes.add(new Attribute("eqR"));
+			allAttributes.add(new Attribute("chR2"));
+			allAttributes.add(new Attribute("bbchR"));
+			allAttributes.add(new Attribute("astchAR"));
+			allAttributes.add(new Attribute("astchPR"));
+			allAttributes.add(new Attribute("rms"));
 		}
 		dataset = new Instances("mCALI", allAttributes, 0);           
 		dataset.setClassIndex(0);
@@ -77,7 +91,7 @@ public class NewRecognizer {
 		Instance inst = new DenseInstance(numAttributes);
 		inst.setDataset(dataset);
 		//inst.setClassValue(g.getName());
-		if (numAttributes == 12){
+		if (numAttributes == 15){
 
 			inst.setValue(0, g.getName());
 			inst.setValue(1, f.getCircleR());
@@ -91,23 +105,26 @@ public class NewRecognizer {
 			inst.setValue(9, f.getMovementY());
 			inst.setValue(10, f.getChR2());
 			inst.setValue(11, f.getBbchR());
-			//inst.setValue(12, f.getRMS());
+			inst.setValue(12, f.getAstchAR());
+			inst.setValue(13, f.getAstchPR());
+			inst.setValue(14, f.getRMS());
 			
-		}else if (numAttributes == 11){
+		}else if (numAttributes == 13){
 			inst.setValue(0, g.getName());
 			inst.setValue(1, f.getCircleR());
 			inst.setValue(2, f.getRectR2());
 			inst.setValue(3, f.getRectR3());
-			inst.setValue(4, f.getTriR3());
-			inst.setValue(5, f.getAspectR());
-			inst.setValue(6, f.getEqR1());
-			inst.setValue(7, f.getMovementY());
-			inst.setValue(8, f.getChR2());
-			inst.setValue(9, f.getChR3());
-			inst.setValue(10, f.getBbchR());
-			//inst.setValue(11, f.getRMS());
+			inst.setValue(4, f.getAspectR());
+			inst.setValue(5, f.getEqR1());
+			inst.setValue(6, f.getMovementY());
+			inst.setValue(7, f.getChR2());
+			inst.setValue(8, f.getChR3());
+			inst.setValue(9, f.getBbchR());
+			inst.setValue(10, f.getAstchAR());
+			inst.setValue(11, f.getAstchPR());
+			inst.setValue(12, f.getRMS());
 			
-		}else if (numAttributes == 8){
+		}else if (numAttributes == 11){
 			inst.setValue(0, g.getName());
 			inst.setValue(1, f.getRectR2());
 			inst.setValue(2, f.getAspectR());
@@ -116,9 +133,21 @@ public class NewRecognizer {
 			inst.setValue(5, f.getChR2());
 			inst.setValue(6, f.getChR3());
 			inst.setValue(7, f.getBbchR());
-			//inst.setValue(8, f.getRMS());
+			inst.setValue(8, f.getAstchAR());
+			inst.setValue(9, f.getAstchPR());
+			inst.setValue(10, f.getRMS());
+		}else if (numAttributes == 8){
+			inst.setValue(0, g.getName());
+			inst.setValue(1, f.getRectR2());
+			inst.setValue(2, f.getEqR1());
+			inst.setValue(3, f.getChR2());
+			inst.setValue(4, f.getBbchR());
+			inst.setValue(5, f.getAstchAR());
+			inst.setValue(6, f.getAstchPR());
+			inst.setValue(7, f.getRMS());
 		}
 		dataset.add(inst);
+		
 	}
 
 	public void trainClassifier() {

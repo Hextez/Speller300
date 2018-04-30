@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import classificador.NewGesture;
+import classificador.NewWriter;
 import mcali.Gesture;
 import mcali.Point;
 import mcali.Recognizer;
@@ -20,8 +22,8 @@ public class OfflineTest7User1User {
 
 	private static ArrayList<Integer> listOfTargetsNTargets = new ArrayList<>();
 
-	private static int avgTarget = 5 ;
-	private static int avgNTarget = 5;
+	private static int avgTarget = 9 ;
+	private static int avgNTarget = 9;
 	private final static int multipler = 20;
 	private final static int fromTrial = 15;
 	private final static int mc = 50;
@@ -34,8 +36,8 @@ public class OfflineTest7User1User {
 
 	public static void main(String[] args) throws IOException {
 
-		while (avgTarget <= 14){
-			Writer w = new Writer("OfflineTest\\AllUsers\\mCaliTested_AllUsers_T_"+avgTarget+"_NT_"+avgNTarget);
+		while (avgTarget <= 10){
+			Writer w = new Writer("OfflineTest\\AllUsers\\mCaliTested_AllUsersFeatureALLFeatures_T_"+avgTarget+"_NT_"+avgNTarget);
 			int totalToread = 0;
 			if ( (700/avgTarget) % 1 == 0){
 				totalToread = 700/avgTarget;

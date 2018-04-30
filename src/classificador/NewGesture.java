@@ -10,6 +10,8 @@ import mcali.Point2D;
 import mcali.Polygon;
 import mcali.Stroke;
 import mcali.Vector;
+import signalprocesser.voronoi.VPoint;
+import tests.AlphaShape;
 
 import java.util.*;
 
@@ -289,14 +291,19 @@ public class NewGesture {
 			extremeQuad = calcExtremeQuad();
 			boundingBox = calcBoundingBox();
 //			alphaShape = calcAlphaShape();
-			//alphaShapeTest = calcAlphaShapeTest("STE", -1);
+			alphaShapeTest = calcAlphaShapeTest("STE", -1);
 			//calcAngleHistograms();
 			
-			calcRMS();
+			
 			calcMovement();
 			calcIntersections();
 			calcRatios();
 //			calcCorrelation();
+			
+			features.setAstchAR(divide(getAlphaShapeTest().area(), getConvexHull().area(), true));
+			features.setAstchPR(divide(getConvexHull().perimeter(), getAlphaShapeTest().perimeter(), true));
+			calcRMS();
+
 		}
 		
 		public void calcRatios() {
@@ -1053,10 +1060,10 @@ public class NewGesture {
 			
 			return bb;
 		}
-		/*
+		
 		public Polygon calcAlphaShape(String type, int normalisedValue) {
 			Polygon as = new Polygon();
-			ArrayList<VPoint> boundary = new AlphaShape().getAlphaShape(this, type, normalisedValue);
+			ArrayList<VPoint> boundary = new NewAlphaShape().getAlphaShape(this, type, normalisedValue);
 //			System.out.println("AS: " + VoronoiShared.calculateAreaOfShape(boundary));
 			if (boundary != null) {
 				for (VPoint v : boundary)
@@ -1068,7 +1075,7 @@ public class NewGesture {
 
 		public Polygon calcAlphaShapeTest(String type, int normalisedValue) {
 			Polygon as = new Polygon();
-			ArrayList<VPoint> boundary = new AlphaShape().getAlphaShapeTest(this, type, normalisedValue);
+			ArrayList<VPoint> boundary = new NewAlphaShape().getAlphaShapeTest(this, type, normalisedValue);
 
 			if (boundary != null) {
 				for (VPoint v : boundary)
@@ -1088,7 +1095,7 @@ public class NewGesture {
 //			System.out.println("AS Test Poly area: " + as.area());
 			return as;
 		}
-		 	*/
+		 	
 		int numBins = 8;
 		double inv_deltaphi = numBins / (2 * Math.PI);
 		
@@ -1313,7 +1320,7 @@ public class NewGesture {
 					sum += (pts.get(i).y * pts.get(i).y);
 				}
 				double rms = sum/numPoints;
-				features.setRMS(Math.abs(rms));
+				features.setRMS(Math.abs(rms)/getConvexHull().area());
 				return;
 			}
 			

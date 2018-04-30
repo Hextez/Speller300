@@ -39,7 +39,7 @@ public class NewWriter {
 			//fileContent += "%\n% Joao Vieira\n";
 			line += "@RELATION mCALI\n\n";
 			line += "@ATTRIBUTE class {}\n";
-			if (this.numFeatures == 13){
+			if (this.numFeatures == 15){
 				line += "@ATTRIBUTE circleR NUMERIC\n";
 				line += "@ATTRIBUTE rectR1 NUMERIC\n";
 				line += "@ATTRIBUTE rectR2 NUMERIC\n";
@@ -51,20 +51,23 @@ public class NewWriter {
 				line += "@ATTRIBUTE MovY NUMERIC\n";
 				line += "@ATTRIBUTE chR2 NUMERIC\n";
 				line += "@ATTRIBUTE bbchR NUMERIC\n";
-				//line += "@ATTRIBUTE rms NUMERIC\n";
-			}else if (this.numFeatures == 12){
+				line += "@ATTRIBUTE astchAR NUMERIC\n";
+				line += "@ATTRIBUTE astchPR NUMERIC\n";
+				line += "@ATTRIBUTE rms NUMERIC\n";
+			}else if (this.numFeatures == 13){
 				line += "@ATTRIBUTE circleR NUMERIC\n";
 				line += "@ATTRIBUTE rectR2 NUMERIC\n";
 				line += "@ATTRIBUTE rectR3 NUMERIC\n";
-				line += "@ATTRIBUTE triR3 NUMERIC\n";
 				line += "@ATTRIBUTE aspectR NUMERIC\n";
 				line += "@ATTRIBUTE eqR NUMERIC\n";
 				line += "@ATTRIBUTE MovY NUMERIC\n";
 				line += "@ATTRIBUTE chR2 NUMERIC\n";
 				line += "@ATTRIBUTE chR3 NUMERIC\n";
 				line += "@ATTRIBUTE bbchR NUMERIC\n";
-				//line += "@ATTRIBUTE rms NUMERIC\n";
-			}else if (this.numFeatures == 9){
+				line += "@ATTRIBUTE astchAR NUMERIC\n";
+				line += "@ATTRIBUTE astchPR NUMERIC\n";
+				line += "@ATTRIBUTE rms NUMERIC\n";
+			}else if (this.numFeatures == 11){
 				line += "@ATTRIBUTE rectR2 NUMERIC\n";
 				line += "@ATTRIBUTE aspectR NUMERIC\n";
 				line += "@ATTRIBUTE eqR NUMERIC\n";
@@ -72,7 +75,17 @@ public class NewWriter {
 				line += "@ATTRIBUTE chR2 NUMERIC\n";
 				line += "@ATTRIBUTE chR3 NUMERIC\n";
 				line += "@ATTRIBUTE bbchR NUMERIC\n";
-				//line += "@ATTRIBUTE rms NUMERIC\n";
+				line += "@ATTRIBUTE astchAR NUMERIC\n";
+				line += "@ATTRIBUTE astchPR NUMERIC\n";
+				line += "@ATTRIBUTE rms NUMERIC\n";
+			}else if (this.numFeatures == 8){
+				line += "@ATTRIBUTE rectR2 NUMERIC\n";
+				line += "@ATTRIBUTE eqR NUMERIC\n";
+				line += "@ATTRIBUTE chR2 NUMERIC\n";
+				line += "@ATTRIBUTE bbchR NUMERIC\n";
+				line += "@ATTRIBUTE astchAR NUMERIC\n";
+				line += "@ATTRIBUTE astchPR NUMERIC\n";
+				line += "@ATTRIBUTE rms NUMERIC\n";
 			}
 			line += "\n@DATA\n";
 
@@ -103,7 +116,7 @@ public class NewWriter {
 			String fileContent = "";
 			NewFeatures f = g.getFeatures();
 			fileContent += g.getName() + ",";
-			if (this.numFeatures == 13){
+			if (this.numFeatures == 15){
 				fileContent += f.getCircleR() + ",";
 				fileContent += f.getRectR1() + ",";
 				fileContent += f.getRectR2() + ",";
@@ -114,29 +127,42 @@ public class NewWriter {
 				fileContent += f.getEqR1() + ",";
 				fileContent += f.getMovementY() + ",";
 				fileContent += f.getChR2() + ",";
-				fileContent += f.getBbchR() + "\n";
-				//fileContent += f.getRMS()+ "\n";
-			}else if (this.numFeatures == 12){
+				fileContent += f.getBbchR() + ",";
+				fileContent += f.getAstchAR() + ",";
+				fileContent += f.getAstchPR() + ",";
+				fileContent += f.getRMS()+ "\n";
+			}else if (this.numFeatures == 13){
 				fileContent += f.getCircleR() + ",";
 				fileContent += f.getRectR2() + ",";
 				fileContent += f.getRectR3() + ",";
-				fileContent += f.getTriR3() + ",";
 				fileContent += f.getAspectR() + ",";
 				fileContent += f.getEqR1() + ",";
 				fileContent += f.getMovementY() + ",";
 				fileContent += f.getChR2() + ",";
 				fileContent += f.getChR3() + ",";
-				fileContent += f.getBbchR() + "\n";
-				//fileContent += f.getRMS()+ "\n";
-			}else if (this.numFeatures == 9){
+				fileContent += f.getBbchR() + ",";
+				fileContent += f.getAstchAR() + ",";
+				fileContent += f.getAstchPR() + ",";
+				fileContent += f.getRMS()+ "\n";
+			}else if (this.numFeatures == 11){
 				fileContent += f.getRectR2() + ",";
 				fileContent += f.getAspectR() + ",";
 				fileContent += f.getEqR1() + ",";
 				fileContent += f.getMovementY() + ",";
 				fileContent += f.getChR2() + ",";
 				fileContent += f.getChR3() + ",";
-				fileContent += f.getBbchR() + "\n";
-				//fileContent += f.getRMS()+ "\n";
+				fileContent += f.getBbchR() + ",";
+				fileContent += f.getAstchAR() + ",";
+				fileContent += f.getAstchPR() + ",";
+				fileContent += f.getRMS()+ "\n";
+			}else if (this.numFeatures == 8){
+				fileContent += f.getRectR2() + ",";
+				fileContent += f.getEqR1() + ",";
+				fileContent += f.getChR2() + ",";
+				fileContent += f.getBbchR() + ",";
+				fileContent += f.getAstchAR() + ",";
+				fileContent += f.getAstchPR() + ",";
+				fileContent += f.getRMS()+ "\n";
 			}
 
 			writerARFF.write(fileContent);

@@ -12,6 +12,8 @@ public class NewFeatures {
 		private double chR2, chR3;
 		// Bounding box
 		private double bbchR;
+		
+		private double astchAR, astchPR;
 
 		//Nova feature RMS 
 		private double rms;
@@ -21,7 +23,8 @@ public class NewFeatures {
 			eqR1 = 0;
 			movementY = 0;
 			chR2 = 0;
-			bbchR = 0; 
+			bbchR = 0;
+			astchAR = astchPR = 0;
 			rms = 0;
 		}
 		
@@ -119,6 +122,22 @@ public class NewFeatures {
 
 		public void setBbchR(double bbchR) {
 			this.bbchR = bbchR;
+		}
+		
+		public double getAstchAR(){
+			return astchAR;
+		}
+		
+		public void setAstchAR(double astchAR){
+			this.astchAR = astchAR;
+		}
+		
+		public double getAstchPR(){
+			return astchPR;
+		}
+		
+		public void setAstchPR(double astchPR){
+			this.astchPR = astchPR;
 		}
 		
 		//Nova feature adicionada
