@@ -22,9 +22,9 @@ public class OfflineTest7User1User {
 
 	private static ArrayList<Integer> listOfTargetsNTargets = new ArrayList<>();
 
-	private static int avgTarget = 9 ;
-	private static int avgNTarget = 9;
-	private final static int multipler = 20;
+	private static int avgTarget = 5;
+	private static int avgNTarget = 5;
+	private final static int multipler = 150;
 	private final static int fromTrial = 15;
 	private final static int mc = 50;
 
@@ -37,13 +37,13 @@ public class OfflineTest7User1User {
 	public static void main(String[] args) throws IOException {
 
 		while (avgTarget <= 10){
-			Writer w = new Writer("OfflineTest\\AllUsers\\mCaliTested_AllUsersFeatureALLFeatures_T_"+avgTarget+"_NT_"+avgNTarget);
+			NewWriter w = new NewWriter("FinalTests\\AllUsers\\Novos\\mCaliTested_AllUsersALSNormalizedReduced_T_"+avgTarget+"_NT_"+avgNTarget);
 			int totalToread = 0;
-			if ( (700/avgTarget) % 1 == 0){
-				totalToread = 700/avgTarget;
+			if ( (96/avgTarget) % 1 == 0){
+				totalToread = (96/avgTarget) * 3;
 				System.out.println(totalToread);
 			}else {
-				totalToread = (700/avgTarget) -1;
+				totalToread = ((96/avgTarget)-1) * 3;
 				System.out.println(totalToread);
 			}
 			for (File ficheiroLeitura : new File(args[0]).listFiles()) {
@@ -56,7 +56,8 @@ public class OfflineTest7User1User {
 				int targetDiv = 0;
 				int totalTar = 0;
 				int totalNTar = 0;
-				for (int i = listOfTrials.get(0)-1; i < 347704-1; i++){
+				
+				for (int i = 0; i < listOfTargetsNTargets.size(); i++){
 
 					if (listOfTargetsNTargets.get(i) == 1 && totalNTar < totalToread ){
 
@@ -79,7 +80,7 @@ public class OfflineTest7User1User {
 							}
 						}
 						if (ntargetDiv == avgNTarget ){ //quando o valor e chegado
-							Gesture g = new Gesture("NTarget");
+							NewGesture g = new NewGesture("NTarget");
 
 							ArrayList<Double> ntargetMediaTemp = new ArrayList<>();
 							for ( int b = 0; b < 256; b++){
@@ -88,10 +89,18 @@ public class OfflineTest7User1User {
 
 							}
 							ntargetMedia = ntargetMediaTemp;
+							
+							double maxAbsolute = getMaxAbsolute(ntargetMedia);
+							ntargetMediaTemp = new ArrayList<>();
+							for ( int b = 0; b < 256; b++){
 
+								ntargetMediaTemp.add(ntargetMedia.get(b)/maxAbsolute);
+
+							}
+							ntargetMedia = ntargetMediaTemp;
 							for (int b = 0; b < 256; b++){
 								Point p = new Point((int) (b*2),(int) (ntargetMedia.get(b).doubleValue()*multipler));
-								g.addPoint(p);	
+								g.addPoint(p);
 							}
 							try{
 							g.finalizeStroke();
@@ -129,7 +138,7 @@ public class OfflineTest7User1User {
 						}
 						if (targetDiv == avgTarget){ //quando o valor e chegado
 
-							Gesture g = new Gesture("Target");
+							NewGesture g = new NewGesture("Target");
 							ArrayList<Double> targetMediaTemp = new ArrayList<>();
 							for ( int b = 0; b < 256; b++){
 
@@ -137,8 +146,15 @@ public class OfflineTest7User1User {
 
 							}
 							targetMedia = targetMediaTemp;
+							
+							double maxAbsolute = getMaxAbsolute(targetMedia);
+							targetMediaTemp = new ArrayList<>();
+							for ( int b = 0; b < 256; b++){
 
+								targetMediaTemp.add(targetMedia.get(b)/maxAbsolute);
 
+							}
+							targetMedia = targetMediaTemp;
 							for (int b = 0; b < 256; b++){
 								Point p = new Point((int) (b*2),(int) (targetMedia.get(b).doubleValue()*multipler));
 								g.addPoint(p);
@@ -157,14 +173,25 @@ public class OfflineTest7User1User {
 
 					}
 				}
+				System.out.println("um user");
+				
 			}
 			w.close();
+			System.out.println("feito um ");
 
 			avgTarget++;
 			avgNTarget = avgTarget;
 		}
 
 
+	}
+	
+	public static double getMaxAbsolute(ArrayList<Double> list) {
+		List<Double> x = new ArrayList<Double>(list);
+		for( int i = 0; i < x.size(); i++ ){
+		   x.set( i, Math.abs(x.get(i)) );
+		}
+		return Collections.max( x );
 	}
 
 	public static double normalise(double double1, Double double3, Double double2) {
@@ -186,5 +213,22 @@ public class OfflineTest7User1User {
 		}	
 		return valores;
 
+	}
+	
+
+	public static ArrayList<Double> getMediaElectERP(File file) throws IOException{
+		ArrayList<Double> valores = new ArrayList<>();
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String line;
+		while( (line = br.readLine())!= null){
+			String[] linha = line.split(",");
+			double total = Double.parseDouble(linha[0]) + Double.parseDouble(linha[2]) +
+					Double.parseDouble(linha[4]) + Double.parseDouble(linha[5]) +
+					Double.parseDouble(linha[12]) + Double.parseDouble(linha[13]) +
+					Double.parseDouble(linha[14]) + Double.parseDouble(linha[15]);
+			valores.add(total/8.0);
+			listOfTargetsNTargets.add(Integer.parseInt(linha[16]));
+		}	
+		return valores;
 	}
 }

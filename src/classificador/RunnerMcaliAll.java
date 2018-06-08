@@ -32,20 +32,18 @@ public class RunnerMcaliAll {
 
 
 	public static void main(String[] args) throws Exception {
-		for (int classif = 0; classif < 3; classif++){
+		for (int classif = 0; classif < 2; classif++){
 
 			avgTarget = avgNTarget = 5;
 
 			while (avgTarget <= 10){
 				PrintWriter pw;
 				if ( classif == 0){
-					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormalAllFeaturesvote3_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-				}else if (classif == 1){
-					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormalAllFeaturesvote4_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormalAllFeaturesDerivadavote3_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
 				}else{
-					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormalAllFeaturesvote5_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-
+					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormalAllFeaturesDerivadavote5_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
 				}
+				
 				StringBuilder sb = new StringBuilder();
 				sb.append("UserTested,Target Percent,NTarget Percent\n");
 
@@ -57,13 +55,10 @@ public class RunnerMcaliAll {
 					s.add("NTarget");
 
 					if ( classif == 0){
-						w = new Writer("OfflineTest\\UserIndependentNormalNewAllFeaturesvote3\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
+						w = new Writer("OfflineTest\\UserIndependentNormalNewAllFeaturesDerivadavote3\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
 						mcali = new Recognizer("vote3", s);
-					}else if (classif == 1){
-						w = new Writer("OfflineTest\\UserIndependentNormalNewAllFeaturesvote4\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
-						mcali = new Recognizer("vote4", s);
 					}else{
-						w = new Writer("OfflineTest\\UserIndependentNormalNewAllFeaturesvote5\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
+						w = new Writer("OfflineTest\\UserIndependentNormalNewAllFeaturesDerivadavote5\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
 						mcali = new Recognizer("vote5", s);
 					}
 
@@ -119,8 +114,15 @@ public class RunnerMcaliAll {
 										ntargetMedia = ntargetMediaTemp;
 
 										for (int b = 0; b < 256; b++){
-											Point p = new Point((int) (b*2),(int) (ntargetMedia.get(b).doubleValue()*multipler));
-											g.addPoint(p);	
+											if (b == 0 || b == 255) {
+												Point p = new Point((int) (b*2),0);
+												g.addPoint(p);
+											}else {
+												double value = (ntargetMedia.get(b).doubleValue()-ntargetMedia.get(b-1).doubleValue());
+												double deriv = value/(b-(b-1));
+												Point p = new Point((int) (b*2),(int) (deriv*multipler));
+												g.addPoint(p);	
+											}
 										}
 										g.finalizeStroke();
 										try{
@@ -171,8 +173,15 @@ public class RunnerMcaliAll {
 
 
 										for (int b = 0; b < 256; b++){
-											Point p = new Point((int) (b*2),(int) (targetMedia.get(b).doubleValue()*multipler));
-											g.addPoint(p);
+											if (b == 0 || b == 255) {
+												Point p = new Point((int) (b*2),0);
+												g.addPoint(p);
+											}else {
+												double value = (targetMedia.get(b).doubleValue()-targetMedia.get(b-1).doubleValue());
+												double deriv = value/(b-(b-1));
+												Point p = new Point((int) (b*2),(int) (deriv*multipler));
+												g.addPoint(p);	
+											}
 										}
 										try{
 											g.finalizeStroke();
@@ -254,8 +263,14 @@ public class RunnerMcaliAll {
 								}
 								ntargetMedia = ntargetMediaTemp;
 								for (int b = 0; b < 256; b++){
-									Point p = new Point((int) (b*2),(int) (ntargetMedia.get(b).doubleValue()*multipler));
-									g.addPoint(p);
+									if (b == 0 || b == 255) {
+										Point p = new Point((int) (b*2),0);
+										g.addPoint(p);
+									}else {
+										double val = (ntargetMedia.get(b).doubleValue()-ntargetMedia.get(b-1).doubleValue())/b-(b-1);
+										Point p = new Point((int) (b*2),(int) (val*multipler));
+										g.addPoint(p);	
+									}
 								}
 
 								try{
@@ -305,8 +320,14 @@ public class RunnerMcaliAll {
 								targetMedia = targetMediaTemp;
 
 								for (int b = 0; b < 256; b++){
-									Point p = new Point((int) (b*2),(int) (targetMedia.get(b).doubleValue()*multipler));
-									g.addPoint(p);
+									if (b == 0 || b == 255) {
+										Point p = new Point((int) (b*2),0);
+										g.addPoint(p);
+									}else {
+										double val = (targetMedia.get(b).doubleValue()-targetMedia.get(b-1).doubleValue())/b-(b-1);
+										Point p = new Point((int) (b*2),(int) (val*multipler));
+										g.addPoint(p);	
+									}
 								}
 								try{
 									g.finalizeStroke();

@@ -23,8 +23,7 @@ public class NewWriter {
 	private int gestID;
 	private int numFeatures;
 
-	public NewWriter(String path, int numFeatures) {
-		this.numFeatures = numFeatures;
+	public NewWriter(String path) {
 		arff = new File(path + ".arff");
 		xml = new File(path + ".xml");
 		classes = new ArrayList<String>();
@@ -39,54 +38,30 @@ public class NewWriter {
 			//fileContent += "%\n% Joao Vieira\n";
 			line += "@RELATION mCALI\n\n";
 			line += "@ATTRIBUTE class {}\n";
-			if (this.numFeatures == 15){
-				line += "@ATTRIBUTE circleR NUMERIC\n";
-				line += "@ATTRIBUTE rectR1 NUMERIC\n";
-				line += "@ATTRIBUTE rectR2 NUMERIC\n";
-				line += "@ATTRIBUTE rectR3 NUMERIC\n";
-				line += "@ATTRIBUTE rectR4 NUMERIC\n";
-				line += "@ATTRIBUTE triR3 NUMERIC\n";
-				line += "@ATTRIBUTE aspectR NUMERIC\n";
-				line += "@ATTRIBUTE eqR NUMERIC\n";
-				line += "@ATTRIBUTE MovY NUMERIC\n";
-				line += "@ATTRIBUTE chR2 NUMERIC\n";
-				line += "@ATTRIBUTE bbchR NUMERIC\n";
-				line += "@ATTRIBUTE astchAR NUMERIC\n";
-				line += "@ATTRIBUTE astchPR NUMERIC\n";
-				line += "@ATTRIBUTE rms NUMERIC\n";
-			}else if (this.numFeatures == 13){
-				line += "@ATTRIBUTE circleR NUMERIC\n";
-				line += "@ATTRIBUTE rectR2 NUMERIC\n";
-				line += "@ATTRIBUTE rectR3 NUMERIC\n";
-				line += "@ATTRIBUTE aspectR NUMERIC\n";
-				line += "@ATTRIBUTE eqR NUMERIC\n";
-				line += "@ATTRIBUTE MovY NUMERIC\n";
-				line += "@ATTRIBUTE chR2 NUMERIC\n";
-				line += "@ATTRIBUTE chR3 NUMERIC\n";
-				line += "@ATTRIBUTE bbchR NUMERIC\n";
-				line += "@ATTRIBUTE astchAR NUMERIC\n";
-				line += "@ATTRIBUTE astchPR NUMERIC\n";
-				line += "@ATTRIBUTE rms NUMERIC\n";
-			}else if (this.numFeatures == 11){
-				line += "@ATTRIBUTE rectR2 NUMERIC\n";
-				line += "@ATTRIBUTE aspectR NUMERIC\n";
-				line += "@ATTRIBUTE eqR NUMERIC\n";
-				line += "@ATTRIBUTE MovY NUMERIC\n";
-				line += "@ATTRIBUTE chR2 NUMERIC\n";
-				line += "@ATTRIBUTE chR3 NUMERIC\n";
-				line += "@ATTRIBUTE bbchR NUMERIC\n";
-				line += "@ATTRIBUTE astchAR NUMERIC\n";
-				line += "@ATTRIBUTE astchPR NUMERIC\n";
-				line += "@ATTRIBUTE rms NUMERIC\n";
-			}else if (this.numFeatures == 8){
-				line += "@ATTRIBUTE rectR2 NUMERIC\n";
-				line += "@ATTRIBUTE eqR NUMERIC\n";
-				line += "@ATTRIBUTE chR2 NUMERIC\n";
-				line += "@ATTRIBUTE bbchR NUMERIC\n";
-				line += "@ATTRIBUTE astchAR NUMERIC\n";
-				line += "@ATTRIBUTE astchPR NUMERIC\n";
-				line += "@ATTRIBUTE rms NUMERIC\n";
-			}
+	    	line += "@ATTRIBUTE rectR1 NUMERIC\n";
+	    	line += "@ATTRIBUTE rectR2 NUMERIC\n";
+	    	line += "@ATTRIBUTE rectR3 NUMERIC\n";
+	    	line += "@ATTRIBUTE eqR NUMERIC\n";
+	    	line += "@ATTRIBUTE MovY NUMERIC\n";
+	    	line += "@ATTRIBUTE chR2 NUMERIC\n";
+	    	line += "@ATTRIBUTE chR3 NUMERIC\n";
+	    	line += "@ATTRIBUTE bbchR NUMERIC\n";
+	    	line += "@ATTRIBUTE quad2FillR NUMERIC\n";
+	    	line += "@ATTRIBUTE quad3FillR NUMERIC\n";
+	    	line += "@ATTRIBUTE quad4FillR NUMERIC\n";
+			line += "@ATTRIBUTE astchAR NUMERIC\n";
+			line += "@ATTRIBUTE astchPR NUMERIC\n";
+			line += "@ATTRIBUTE f1 NUMERIC\n";
+			line += "@ATTRIBUTE f2 NUMERIC\n";
+			line += "@ATTRIBUTE f3 NUMERIC\n";
+			line += "@ATTRIBUTE f4 NUMERIC\n";
+			line += "@ATTRIBUTE f5 NUMERIC\n";
+			line += "@ATTRIBUTE f6 NUMERIC\n";
+			line += "@ATTRIBUTE f7 NUMERIC\n";
+			line += "@ATTRIBUTE f8 NUMERIC\n";
+			line += "@ATTRIBUTE astchAB NUMERIC\n";
+			line += "@ATTRIBUTE rms NUMERIC\n";
+			line += "@ATTRIBUTE fillingR NUMERIC\n";
 			line += "\n@DATA\n";
 
 			writerARFF.write(line);
@@ -116,54 +91,30 @@ public class NewWriter {
 			String fileContent = "";
 			NewFeatures f = g.getFeatures();
 			fileContent += g.getName() + ",";
-			if (this.numFeatures == 15){
-				fileContent += f.getCircleR() + ",";
-				fileContent += f.getRectR1() + ",";
-				fileContent += f.getRectR2() + ",";
-				fileContent += f.getRectR3() + ",";
-				fileContent += f.getRectR4() + ",";
-				fileContent += f.getTriR3() + ",";
-				fileContent += f.getAspectR() + ",";
-				fileContent += f.getEqR1() + ",";
-				fileContent += f.getMovementY() + ",";
-				fileContent += f.getChR2() + ",";
-				fileContent += f.getBbchR() + ",";
-				fileContent += f.getAstchAR() + ",";
-				fileContent += f.getAstchPR() + ",";
-				fileContent += f.getRMS()+ "\n";
-			}else if (this.numFeatures == 13){
-				fileContent += f.getCircleR() + ",";
-				fileContent += f.getRectR2() + ",";
-				fileContent += f.getRectR3() + ",";
-				fileContent += f.getAspectR() + ",";
-				fileContent += f.getEqR1() + ",";
-				fileContent += f.getMovementY() + ",";
-				fileContent += f.getChR2() + ",";
-				fileContent += f.getChR3() + ",";
-				fileContent += f.getBbchR() + ",";
-				fileContent += f.getAstchAR() + ",";
-				fileContent += f.getAstchPR() + ",";
-				fileContent += f.getRMS()+ "\n";
-			}else if (this.numFeatures == 11){
-				fileContent += f.getRectR2() + ",";
-				fileContent += f.getAspectR() + ",";
-				fileContent += f.getEqR1() + ",";
-				fileContent += f.getMovementY() + ",";
-				fileContent += f.getChR2() + ",";
-				fileContent += f.getChR3() + ",";
-				fileContent += f.getBbchR() + ",";
-				fileContent += f.getAstchAR() + ",";
-				fileContent += f.getAstchPR() + ",";
-				fileContent += f.getRMS()+ "\n";
-			}else if (this.numFeatures == 8){
-				fileContent += f.getRectR2() + ",";
-				fileContent += f.getEqR1() + ",";
-				fileContent += f.getChR2() + ",";
-				fileContent += f.getBbchR() + ",";
-				fileContent += f.getAstchAR() + ",";
-				fileContent += f.getAstchPR() + ",";
-				fileContent += f.getRMS()+ "\n";
-			}
+			fileContent += f.getRectR1() + ",";
+			fileContent += f.getRectR2() + ",";
+			fileContent += f.getRectR3() + ",";
+			fileContent += f.getEqR1() + ",";
+			fileContent += f.getMovementY() + ",";
+			fileContent += f.getChR2() + ",";
+			fileContent += f.getChR3() + ",";
+			fileContent += f.getBbchR() + ",";
+			fileContent += f.getQuad2FillR() + ",";
+			fileContent += f.getQuad3FillR() + ",";
+			fileContent += f.getQuad4FillR() + ",";
+			fileContent += f.getAstchAR() + ",";
+			fileContent += f.getAstchPR()+ ",";
+			fileContent += f.getAa1() + ",";
+			fileContent += f.getAa2() + ",";
+			fileContent += f.getAa3() + ",";
+			fileContent += f.getAa4() + ",";
+			fileContent += f.getRa1() + ",";
+			fileContent += f.getRa2() + ",";
+			fileContent += f.getRa3() + ",";
+			fileContent += f.getRa4() + ",";
+			fileContent += f.getAstchAB() + ",";
+			fileContent += f.getRMS() + ",";
+			fileContent += f.getFillingR() + "\n";
 
 			writerARFF.write(fileContent);
 			writerARFF.flush();

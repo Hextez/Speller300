@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Runner {
 
 	private static int avgTarget = 5;
 	private static int avgNTarget = 5;
-	private final static int multipler = 20;
+	private static int multipler = 150;
 	private final static int fromTrial = 35;
 	private final static int mc = 50;
 	private static int numFeatures = 11;
@@ -31,73 +32,63 @@ public class Runner {
 			180001, 189729, 200489, 210217, 219945, 229673, 239401, 250161, 259889, 269617, 279345, 289073, 299833,
 			309561, 319289, 329017, 338745,347704));
 
+	private static String[] classifs = {"SVMNor14"};
 
 	public static void main(String[] args) throws Exception {
-
-		for (int classif = 3; classif < 5; classif++){
-
+		multipler = Integer.parseInt(args[2]);
+		for (int classif = 0; classif < 1; classif++){
+			int d = 0;
 			avgTarget = avgNTarget = 5;
 			while (avgTarget <= 10){
 				PrintWriter pw;
-				if ( classif == 1){
-					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormal8FeaturesVote6_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-				}else if ( classif == 2){
-					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormal8FeaturesVote7_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-				}else if ( classif == 3){
-					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormal8FeaturesVote8_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+				//if (classif == 0 && Integer.parseInt(args[1]) == 1) {}
+				/*if (classif == 0) {
+					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesSMOT_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+				}else if (classif == 1) {
+					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesVote4_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+				}else if (classif == 2) {
+					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesVote5_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+				}else if (classif == 3) {
+					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesVote6_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+				}else{
+					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesVote7_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+				}*/
+				pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24Features"+classifs[classif]+"_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
 
-				}else {
-					pw = new PrintWriter(new File("OfflineTest\\CSV\\UserIndependentNewClassifierNormal8FeaturesSubRandom_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-
-				}
-
+				
 				StringBuilder sb = new StringBuilder();
 				sb.append("UserTested,Target Percent,NTarget Percent\n");
-
-				for (int userTest = 1; userTest < 9; userTest++){
+				
+				for (int userTest = 1; userTest < 49; userTest = userTest + 6){
 					NewWriter w;
+					//NewWriter w2;
 					NewRecognizer mcali;
 					List<String> s = new ArrayList<String>();
 					s.add("Target");
 					s.add("NTarget");
-
-					if ( classif == 0){
-
-						w = new NewWriter("OfflineTest\\UserIndependentNormalNew8Featuresvote5\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget,8);
-
-						mcali = new NewRecognizer("vote5", s,8);
-
-					}else if ( classif == 1){
-
-						w = new NewWriter("OfflineTest\\UserIndependentNormalNew8Featuresvote6\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget,8);
-
-						mcali = new NewRecognizer("vote6", s,8);
-
-					}else if ( classif == 2){
-						w = new NewWriter("OfflineTest\\UserIndependentNormalNew8Featuresvote7\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget,8);
-
-						mcali = new NewRecognizer("vote7", s,8);
-
-
-					}else if ( classif == 3) {
-						w = new NewWriter("OfflineTest\\UserIndependentNormalNew8Featuresvote8\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget,15);
-
-						mcali = new NewRecognizer("vote8", s,8);
-
-
+					mcali = new NewRecognizer(classifs[classif], new File(args[3]).listFiles()[userTest-1+d]);
+					System.out.println(new File(args[3]).listFiles()[userTest-1+d].getName());
+					//if (classif == 0 && Integer.parseInt(args[1]) == 1) {}
+					/*
+					if (classif == 0) {
+						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesSMOT\\UserIndependentNormalizedERP24FeaturesSMOT_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
+						mcali = new NewRecognizer("SVM", s);
+					}else if (classif == 1) {
+						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesVote4\\UserIndependentNormalizedERP24FeaturesVote4_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
+						mcali = new NewRecognizer("vote4", s);
+					}else if (classif == 2) {
+						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesVote5\\UserIndependentNormalizedERP24FeaturesVote5_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
+						mcali = new NewRecognizer("vote5", s);
+					}else if (classif == 3) {
+						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesVote6\\UserIndependentNormalizedERP24FeaturesVote6_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
+						mcali = new NewRecognizer("vote6", s);
 					}else{
-						w = new NewWriter("OfflineTest\\UserIndependentNormalNew8FeaturesSubRandom\\mCaliTested_UsingUser"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget,15);
-
-						mcali = new NewRecognizer("SubRandom", s,8);
-
-
-					}
-
+						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesVote7\\UserIndependentNormalizedERP24FeaturesVote7_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
+						mcali = new NewRecognizer("vote7", s);
+					}*/
+					
 					int user = 1;
-
-
-
-
+					/*
 					for (File ficheiroLeitura : new File(args[0]).listFiles()) {
 						if ( user != userTest){
 							listOfTargetsNTargets = new ArrayList<>();
@@ -110,7 +101,7 @@ public class Runner {
 							int targetDiv = 0;
 							int totalTar = 0;
 							int totalNTar = 0;
-							for (int i = listOfTrials.get(0)-1; i < listOfTargetsNTargets.size(); i++){
+							for (int i = 0; i < listOfTargetsNTargets.size(); i++){
 
 								if (listOfTargetsNTargets.get(i) == 1 && totalNTar < mc){
 
@@ -143,7 +134,16 @@ public class Runner {
 
 										}
 										ntargetMedia = ntargetMediaTemp;
+										if (Integer.parseInt(args[1]) == 1) {
+											double maxAbsolute = getMaxAbsolute(ntargetMedia);
+											ntargetMediaTemp = new ArrayList<>();
+											for ( int b = 0; b < 256; b++){
 
+												ntargetMediaTemp.add(ntargetMedia.get(b)/maxAbsolute);
+
+											}
+											ntargetMedia = ntargetMediaTemp;
+										}
 										for (int b = 0; b < 256; b++){
 											Point p = new Point((int) (b*2),(int) (ntargetMedia.get(b).doubleValue()*multipler));
 											g.addPoint(p);	
@@ -194,8 +194,17 @@ public class Runner {
 
 										}
 										targetMedia = targetMediaTemp;
+										if (Integer.parseInt(args[1]) == 1) {
 
+											double maxAbsolute = getMaxAbsolute(targetMedia);
+											targetMediaTemp = new ArrayList<>();
+											for ( int b = 0; b < 256; b++){
 
+												targetMediaTemp.add(targetMedia.get(b)/maxAbsolute);
+
+											}
+											targetMedia = targetMediaTemp;
+										}
 										for (int b = 0; b < 256; b++){
 											Point p = new Point((int) (b*2),(int) (targetMedia.get(b).doubleValue()*multipler));
 											g.addPoint(p);
@@ -227,7 +236,8 @@ public class Runner {
 
 					mcali.trainClassifier();
 
-
+					*/
+				
 					HashMap<String, Integer> targetResults = new HashMap<>();
 					targetResults.put("Target", 0);
 					targetResults.put("NTarget", 0);
@@ -237,7 +247,8 @@ public class Runner {
 
 
 					listOfTargetsNTargets = new ArrayList<>();
-					ArrayList<Double> valores = getMediaElect(new File(args[0]).listFiles()[userTest-1]);
+					ArrayList<Double> valores = getMediaElect(new File(args[0]).listFiles()[(userTest/6)]);
+					System.out.println(new File(args[0]).listFiles()[(userTest/6)].getName());
 
 					ArrayList<Double> targetMedia = new ArrayList<>();
 					ArrayList<Double> ntargetMedia = new ArrayList<>();
@@ -247,7 +258,7 @@ public class Runner {
 
 					int totalTar = 0;
 					int totalNTar = 0;
-					for (int i = listOfTrials.get(1)-1; i < listOfTargetsNTargets.size(); i++){
+					for (int i = 0; i < listOfTargetsNTargets.size(); i++){
 
 						if (listOfTargetsNTargets.get(i) == 1 && totalNTar < mc ){
 							if (ntargetDiv < avgNTarget){
@@ -271,7 +282,7 @@ public class Runner {
 							}
 							if (ntargetDiv == avgNTarget){
 								NewGesture g = new NewGesture();
-
+								NewGesture g2 = new NewGesture("NTarget");
 								ArrayList<Double> ntargetMediaTemp = new ArrayList<>();
 								for ( int b = 0; b < 256; b++){
 
@@ -279,9 +290,21 @@ public class Runner {
 
 								}
 								ntargetMedia = ntargetMediaTemp;
+								if (Integer.parseInt(args[1]) == 1) {
+
+									double maxAbsolute = getMaxAbsolute(ntargetMedia);
+									ntargetMediaTemp = new ArrayList<>();
+									for ( int b = 0; b < 256; b++){
+
+										ntargetMediaTemp.add(ntargetMedia.get(b)/maxAbsolute);
+
+									}
+									ntargetMedia = ntargetMediaTemp;
+								}
 								for (int b = 0; b < 256; b++){
 									Point p = new Point((int) (b*2),(int) (ntargetMedia.get(b).doubleValue()*multipler));
 									g.addPoint(p);
+									g2.addPoint(p);
 								}
 
 								try{
@@ -322,6 +345,7 @@ public class Runner {
 							if (targetDiv == avgTarget){ //quando o valor e chegado
 
 								NewGesture g = new NewGesture();
+								NewGesture g2 = new NewGesture("Target");
 								ArrayList<Double> targetMediaTemp = new ArrayList<>();
 								for ( int b = 0; b < 256; b++){
 
@@ -329,13 +353,24 @@ public class Runner {
 
 								}
 								targetMedia = targetMediaTemp;
+								if (Integer.parseInt(args[1]) == 1) {
 
+									double maxAbsolute = getMaxAbsolute(targetMedia);
+									targetMediaTemp = new ArrayList<>();
+									for ( int b = 0; b < 256; b++){
+
+										targetMediaTemp.add(targetMedia.get(b)/maxAbsolute);
+
+									}
+									targetMedia = targetMediaTemp;
+								}
 								for (int b = 0; b < 256; b++){
 									Point p = new Point((int) (b*2),(int) (targetMedia.get(b).doubleValue()*multipler));
 									g.addPoint(p);
+									g2.addPoint(p);
 								}
 								try{
-									g.finalizeStroke();
+									g.finalizeStroke();	
 									String result = mcali.classify(g);
 									targetResults.put(result, targetResults.get(result) +1 );
 									totalTar++;
@@ -357,7 +392,6 @@ public class Runner {
 					int targetPercentage = (int) (tCacl * 100);
 					int ntargetPercentage = (int)(ntCacl * 100);
 
-
 					//System.out.println( targetPercentage + "----" + ntargetPercentage);
 					sb.append("User "+userTest+","+targetPercentage+","+ntargetPercentage+"\n");
 					//System.out.println("Foi unm");
@@ -372,6 +406,7 @@ public class Runner {
 
 				avgTarget++;
 				avgNTarget = avgTarget;
+				d++;
 			}
 		}
 
@@ -379,6 +414,14 @@ public class Runner {
 
 
 
+	}
+
+	public static double getMaxAbsolute(ArrayList<Double> list) {
+		List<Double> x = new ArrayList<Double>(list);
+		for( int i = 0; i < x.size(); i++ ){
+			x.set( i, Math.abs(x.get(i)) );
+		}
+		return Collections.max( x );
 	}
 
 	public static double normalise(double double1, Double double3, Double double2) {

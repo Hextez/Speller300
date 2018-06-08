@@ -292,7 +292,7 @@ public class NewGesture {
 			boundingBox = calcBoundingBox();
 //			alphaShape = calcAlphaShape();
 			alphaShapeTest = calcAlphaShapeTest("STE", -1);
-			//calcAngleHistograms();
+			calcAngleHistograms();
 			
 			
 			calcMovement();
@@ -302,7 +302,9 @@ public class NewGesture {
 			
 			features.setAstchAR(divide(getAlphaShapeTest().area(), getConvexHull().area(), true));
 			features.setAstchPR(divide(getConvexHull().perimeter(), getAlphaShapeTest().perimeter(), true));
+			features.setAstchAB(divide(getAlphaShapeTest().area(), getBoundingBox().area(), true));
 			calcRMS();
+			//calcAreas();
 
 		}
 		
@@ -320,17 +322,17 @@ public class NewGesture {
 			double bbArea = boundingBox.area();
 			
 			//features.setCircleR(divide(chPerim * chPerim, chArea, false));
-			features.setCircleR(divide(chArea, chPerim * chPerim, true));  /// ---- Correlation weka
+			//features.setCircleR(divide(chArea, chPerim * chPerim, true));  /// ---- Correlation weka
 			features.setRectR1(divide(chArea, erArea, true)); /// ---- Correlation weka
 			features.setRectR2(divide(chPerim, erPerim, true));/// ---- Correlation weka
 			features.setRectR3(divide(lqArea, erArea, true));
-			features.setRectR4(divide(lqArea, chArea, true));		 			
+			//features.setRectR4(divide(lqArea, chArea, true));		 			
 			/*
 			features.setRectR5(divide(lqPerim, chPerim, true));
 			features.setTriR1(divide(ltArea, chArea, true));
 			features.setTriR2(divide(ltPerim, chPerim, true));
 			*/
-			features.setTriR3(divide(ltArea, lqArea, true)); /// ---- Correlation weka
+			//features.setTriR3(divide(ltArea, lqArea, true)); /// ---- Correlation weka
 			
 			List<Point2D> erPoints = enclosingRect.getPoints();
 			if (erPoints.size() != 0) {
@@ -340,14 +342,14 @@ public class NewGesture {
 				
 				double width = p1.distanceTo(p2);
 				double height = p1.distanceTo(p3);
-				
+				/*
 				if (width < height)   /// ---- Correlation weka
 					features.setAspectR(divide(width, height, true));
 				else
-					features.setAspectR(divide(height, width, true));
+					features.setAspectR(divide(height, width, true));*/
 			}
 			
-			//features.setFillingR(divide(getLength(), chPerim, false));  /// ---- Correlation weka
+			features.setFillingR(divide(getLength(), chPerim, false));  /// ---- Correlation weka
 			//features.setEqR1(divide(eqPerim * eqPerim, eqArea, false));
 			features.setEqR1(divide(eqArea, eqPerim * eqPerim, true));  /// ---- Correlation weka
 			//features.setEqR2(divide(eqArea, chArea, true));
@@ -359,7 +361,7 @@ public class NewGesture {
 			
 			features.setBbchR(divide(chArea, bbArea, true));  /// ---- Correlation weka
 			
-			//calcQuadrantRatios();
+			calcQuadrantRatios();
 		}
 		
 		public void calcMovement() {
@@ -479,12 +481,12 @@ public class NewGesture {
 			}
 
 			double gestTotalLength = getLength();
-/*
-			features.setQuad1FillR(divide(gestQuad1TotalLength, gestTotalLength, true));  /// ---- Correlation weka
+
+			//features.setQuad1FillR(divide(gestQuad1TotalLength, gestTotalLength, true));  /// ---- Correlation weka
 			features.setQuad2FillR(divide(gestQuad2TotalLength, gestTotalLength, true)); /// ---- Correlation weka
 			features.setQuad3FillR(divide(gestQuad3TotalLength, gestTotalLength, true));/// ---- Correlation weka
 			features.setQuad4FillR(divide(gestQuad4TotalLength, gestTotalLength, true));/// ---- Correlation weka
-			*/
+			
 //			quad1CH = calcConvexHull(gestQuad1Pts);
 //			quad2CH = calcConvexHull(gestQuad2Pts);
 //			quad3CH = calcConvexHull(gestQuad3Pts);
@@ -1099,7 +1101,7 @@ public class NewGesture {
 		int numBins = 8;
 		double inv_deltaphi = numBins / (2 * Math.PI);
 		
-		/*
+		
 		public void calcAngleHistograms() {
 			List<Stroke> resampledStrokes = new ArrayList<Stroke>();
 			Function.resampleDistPts(5, strokes, resampledStrokes);
@@ -1300,7 +1302,7 @@ public class NewGesture {
 //			}
 		}
 			
-		*/
+		
 		public int intervalIndex(double angle, int firstSlot) {
 			int angleIndex = (int) ((angle + Math.PI) * inv_deltaphi);
 			if (angleIndex == numBins)
@@ -1321,6 +1323,28 @@ public class NewGesture {
 				}
 				double rms = sum/numPoints;
 				features.setRMS(Math.abs(rms)/getConvexHull().area());
+				return;
+			}
+			
+		}
+		
+		
+		//Nova Feature Areas
+		public void calcAreas(){
+			double sumPos = 0;
+			double sumNeg = 0;
+			for (Stroke s : strokes) {
+				int numPoints = s.getNumPoints();
+				List<Point> pts = s.getPoints();
+				for (int i = 0; i < numPoints; i++) {
+					if (pts.get(i).y > 0) {
+						sumPos+= pts.get(i).y;
+					}else {
+						sumNeg+=pts.get(i).y;
+					}
+				}
+				//features.setAreaPos(4*sumPos/getConvexHull().area());
+				//features.setAreaNeg(-4*sumNeg/getConvexHull().area());
 				return;
 			}
 			
