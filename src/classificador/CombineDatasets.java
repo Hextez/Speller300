@@ -100,7 +100,7 @@ public class CombineDatasets {
 				s.add("Target");
 				s.add("NTarget");
 				NewRecognizer mcali = new NewRecognizer("SVMRBF1", s);
-				for (int file = 1; file < 9; file++) {
+				for (int file = 1; file < 28; file++) {
 					if (user != file) {
 						int totalOfFile;
 						int files;

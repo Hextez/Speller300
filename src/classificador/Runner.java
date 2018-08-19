@@ -32,265 +32,89 @@ public class Runner {
 			180001, 189729, 200489, 210217, 219945, 229673, 239401, 250161, 259889, 269617, 279345, 289073, 299833,
 			309561, 319289, 329017, 338745,347704));
 
-	private static String[] classifs = {"SVMNor14"};
 
 	public static void main(String[] args) throws Exception {
-		multipler = Integer.parseInt(args[2]);
-		for (int classif = 0; classif < 1; classif++){
-			int d = 0;
-			avgTarget = avgNTarget = 5;
-			while (avgTarget <= 10){
-				PrintWriter pw;
-				//if (classif == 0 && Integer.parseInt(args[1]) == 1) {}
-				/*if (classif == 0) {
-					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesSMOT_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-				}else if (classif == 1) {
-					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesVote4_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-				}else if (classif == 2) {
-					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesVote5_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-				}else if (classif == 3) {
-					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesVote6_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-				}else{
-					pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24FeaturesVote7_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
-				}*/
-				pw = new PrintWriter(new File("FinalTests\\CSV\\UserIndependentNormalized24Features"+classifs[classif]+"_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
 
-				
-				StringBuilder sb = new StringBuilder();
-				sb.append("UserTested,Target Percent,NTarget Percent\n");
-				
-				for (int userTest = 1; userTest < 49; userTest = userTest + 6){
-					NewWriter w;
-					//NewWriter w2;
-					NewRecognizer mcali;
-					List<String> s = new ArrayList<String>();
-					s.add("Target");
-					s.add("NTarget");
-					mcali = new NewRecognizer(classifs[classif], new File(args[3]).listFiles()[userTest-1+d]);
-					System.out.println(new File(args[3]).listFiles()[userTest-1+d].getName());
-					//if (classif == 0 && Integer.parseInt(args[1]) == 1) {}
-					/*
-					if (classif == 0) {
-						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesSMOT\\UserIndependentNormalizedERP24FeaturesSMOT_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
-						mcali = new NewRecognizer("SVM", s);
-					}else if (classif == 1) {
-						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesVote4\\UserIndependentNormalizedERP24FeaturesVote4_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
-						mcali = new NewRecognizer("vote4", s);
-					}else if (classif == 2) {
-						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesVote5\\UserIndependentNormalizedERP24FeaturesVote5_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
-						mcali = new NewRecognizer("vote5", s);
-					}else if (classif == 3) {
-						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesVote6\\UserIndependentNormalizedERP24FeaturesVote6_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
-						mcali = new NewRecognizer("vote6", s);
-					}else{
-						w = new NewWriter("FinalTests\\UserIndependentNormalized24FeaturesVote7\\UserIndependentNormalizedERP24FeaturesVote7_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
-						mcali = new NewRecognizer("vote7", s);
-					}*/
-					
-					int user = 1;
-					/*
-					for (File ficheiroLeitura : new File(args[0]).listFiles()) {
-						if ( user != userTest){
-							listOfTargetsNTargets = new ArrayList<>();
-							ArrayList<Double> valores = getMediaElect(ficheiroLeitura);
+		avgTarget = avgNTarget = 5;
+		boolean co = true;
+		while (avgTarget <= 10){
+			PrintWriter pw;
+			PrintWriter pw1;
 
-							ArrayList<Double> targetMedia = new ArrayList<>();
-							ArrayList<Double> ntargetMedia = new ArrayList<>();
 
-							int ntargetDiv = 0;
-							int targetDiv = 0;
-							int totalTar = 0;
-							int totalNTar = 0;
-							for (int i = 0; i < listOfTargetsNTargets.size(); i++){
+			pw = new PrintWriter(new File("FinalTests\\TestSample\\UserIndependentNormalizedSample_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+			pw1 = new PrintWriter(new File("FinalTests\\Media\\UserIndependentALSNormalizedMediaRandomForest_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+			PrintWriter pw2 = new PrintWriter(new File("FinalTests\\UserIndependentPPALS\\UserIndependentALSNormalizedPP_T_"+avgTarget+"_NT_"+avgNTarget+".csv"));
+			StringBuilder sb2 = new StringBuilder();
+			sb2.append("UserTested,Target Percent,NTarget Percent\n");
+			StringBuilder sb = new StringBuilder();
+			sb.append("UserTested,Target Percent,NTarget Percent\n");
 
-								if (listOfTargetsNTargets.get(i) == 1 && totalNTar < mc){
+			StringBuilder sb1 = new StringBuilder();
+			sb1.append("UserTested,Target Percent,NTarget Percent\n");
 
-									if (ntargetDiv < avgNTarget){
-										if (ntargetDiv == 0){ // primeiro a entrar
+			for (int userTest = 1; userTest < 9; userTest++){
+				NewWriter w;
+				NewWriter w2;
 
-											ntargetMedia = new ArrayList<>();
-											for (int b = 0; b < 256; b++){
-												ntargetMedia.add(valores.get(b+i));
+				NewRecognizer mcali;
+				List<String> s = new ArrayList<String>();
+				s.add("Target");
+				s.add("NTarget");
+				mcali = new NewRecognizer("SVMRBF1", s);
+				ArrayList<Double> listOFTargetsPP = new ArrayList<>();
 
-											}
-											ntargetDiv++;
-										}else{ // quando é mais do que 1
-											ArrayList<Double> ntargetMediaTemp = new ArrayList<>();
-											for (int b = 0; b < 256; b++){
-												ntargetMediaTemp.add(valores.get(b+i) + ntargetMedia.get(b));
+				w = new NewWriter("FinalTests\\TestSample\\UserIndependentNormalizedSample_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget);
+				w2 =new NewWriter("FinalTests\\Media\\UserIndependentNormalizedSample_Arff_"+userTest+"_T_"+avgTarget+"_NT_"+avgNTarget, 1);
 
-											}
-											ntargetMedia = ntargetMediaTemp;
-											ntargetDiv++;
+
+				int user = 1;
+
+				for (File ficheiroLeitura : new File(args[0]).listFiles()) {
+					if ( user != userTest){
+						listOfTargetsNTargets = new ArrayList<>();
+						ArrayList<Double> valores = getMediaElect(ficheiroLeitura);
+
+						ArrayList<Double> targetMedia = new ArrayList<>();
+						ArrayList<Double> ntargetMedia = new ArrayList<>();
+
+						int ntargetDiv = 0;
+						int targetDiv = 0;
+						int totalTar = 0;
+						int totalNTar = 0;
+						for (int i = 0; i < listOfTargetsNTargets.size(); i++){
+
+							if (listOfTargetsNTargets.get(i) == 1 && totalNTar < mc){
+								/*
+								if (ntargetDiv < avgNTarget){
+									if (ntargetDiv == 0){ // primeiro a entrar
+
+										ntargetMedia = new ArrayList<>();
+										for (int b = 0; b < 256; b++){
+											ntargetMedia.add(valores.get(b+i));
+
 										}
-									}
-									if (ntargetDiv == avgNTarget ){ //quando o valor e chegado
-										NewGesture g = new NewGesture("NTarget");
-
+										ntargetDiv++;
+									}else{ // quando é mais do que 1
 										ArrayList<Double> ntargetMediaTemp = new ArrayList<>();
-										for ( int b = 0; b < 256; b++){
-
-											ntargetMediaTemp.add(ntargetMedia.get(b)/avgNTarget);
+										for (int b = 0; b < 256; b++){
+											ntargetMediaTemp.add(valores.get(b+i) + ntargetMedia.get(b));
 
 										}
 										ntargetMedia = ntargetMediaTemp;
-										if (Integer.parseInt(args[1]) == 1) {
-											double maxAbsolute = getMaxAbsolute(ntargetMedia);
-											ntargetMediaTemp = new ArrayList<>();
-											for ( int b = 0; b < 256; b++){
-
-												ntargetMediaTemp.add(ntargetMedia.get(b)/maxAbsolute);
-
-											}
-											ntargetMedia = ntargetMediaTemp;
-										}
-										for (int b = 0; b < 256; b++){
-											Point p = new Point((int) (b*2),(int) (ntargetMedia.get(b).doubleValue()*multipler));
-											g.addPoint(p);	
-										}
-										g.finalizeStroke();
-										try{
-											g.calcFeatures();
-											mcali.addExample(g);
-											w.addGesture(g);
-											totalNTar++;
-
-										}catch(Exception e){
-
-										}
-										ntargetDiv = 0;
-										ntargetMedia = new ArrayList<>();
-
+										ntargetDiv++;
 									}
-									i= i+32;
-
-								}else if (listOfTargetsNTargets.get(i) == 2 && totalTar < mc){
-									if (targetDiv < avgTarget){
-										if (targetDiv == 0){ // primeiro a entrar
-
-											targetMedia = new ArrayList<>();
-											for (int b = 0; b < 256; b++){
-												targetMedia.add(valores.get(b+i));
-
-											}
-											targetDiv++;
-										}else{ // quando é mais do que 1
-											ArrayList<Double> targetMediaTemp = new ArrayList<>();
-											for (int b = 0; b < 256; b++){
-												targetMediaTemp.add(valores.get(b+i) + targetMedia.get(b));
-
-											}
-											targetMedia = targetMediaTemp;
-											targetDiv++;
-										}
-									}
-									if (targetDiv == avgTarget){ //quando o valor e chegado
-
-										NewGesture g = new NewGesture("Target");
-										ArrayList<Double> targetMediaTemp = new ArrayList<>();
-										for ( int b = 0; b < 256; b++){
-
-											targetMediaTemp.add(targetMedia.get(b)/avgTarget);
-
-										}
-										targetMedia = targetMediaTemp;
-										if (Integer.parseInt(args[1]) == 1) {
-
-											double maxAbsolute = getMaxAbsolute(targetMedia);
-											targetMediaTemp = new ArrayList<>();
-											for ( int b = 0; b < 256; b++){
-
-												targetMediaTemp.add(targetMedia.get(b)/maxAbsolute);
-
-											}
-											targetMedia = targetMediaTemp;
-										}
-										for (int b = 0; b < 256; b++){
-											Point p = new Point((int) (b*2),(int) (targetMedia.get(b).doubleValue()*multipler));
-											g.addPoint(p);
-										}
-										try{
-											g.finalizeStroke();
-											g.calcFeatures();
-											mcali.addExample(g);
-											w.addGesture(g);
-											totalTar++;
-										}catch (Exception e){
-
-										}
-
-										targetDiv = 0;
-										targetMedia = new ArrayList<>();
-
-
-									}
-									i= i+32;
-
 								}
-							}
-						}
-						user++;
+								if (ntargetDiv == avgNTarget ){ //quando o valor e chegado
+									NewGesture g = new NewGesture("NTarget");
 
-					}
-					w.close();
-
-					mcali.trainClassifier();
-
-					*/
-				
-					HashMap<String, Integer> targetResults = new HashMap<>();
-					targetResults.put("Target", 0);
-					targetResults.put("NTarget", 0);
-					HashMap<String, Integer> ntargetResults = new HashMap<>();
-					ntargetResults.put("Target", 0);
-					ntargetResults.put("NTarget", 0);
-
-
-					listOfTargetsNTargets = new ArrayList<>();
-					ArrayList<Double> valores = getMediaElect(new File(args[0]).listFiles()[(userTest/6)]);
-					System.out.println(new File(args[0]).listFiles()[(userTest/6)].getName());
-
-					ArrayList<Double> targetMedia = new ArrayList<>();
-					ArrayList<Double> ntargetMedia = new ArrayList<>();
-
-					int ntargetDiv = 0;
-					int targetDiv = 0;
-
-					int totalTar = 0;
-					int totalNTar = 0;
-					for (int i = 0; i < listOfTargetsNTargets.size(); i++){
-
-						if (listOfTargetsNTargets.get(i) == 1 && totalNTar < mc ){
-							if (ntargetDiv < avgNTarget){
-								if (ntargetDiv == 0){ // primeiro a entrar
-
-									ntargetMedia = new ArrayList<>();
-									for (int b = 0; b < 256; b++){
-										ntargetMedia.add(valores.get(b+i));
-
-									}
-									ntargetDiv++;
-								}else{ // quando é mais do que 1
 									ArrayList<Double> ntargetMediaTemp = new ArrayList<>();
-									for (int b = 0; b < 256; b++){
-										ntargetMediaTemp.add(valores.get(b+i) + ntargetMedia.get(b));
+									for ( int b = 0; b < 256; b++){
+
+										ntargetMediaTemp.add(ntargetMedia.get(b)/avgNTarget);
 
 									}
 									ntargetMedia = ntargetMediaTemp;
-									ntargetDiv++;
-								}
-							}
-							if (ntargetDiv == avgNTarget){
-								NewGesture g = new NewGesture();
-								NewGesture g2 = new NewGesture("NTarget");
-								ArrayList<Double> ntargetMediaTemp = new ArrayList<>();
-								for ( int b = 0; b < 256; b++){
-
-									ntargetMediaTemp.add(ntargetMedia.get(b)/avgNTarget);
-
-								}
-								ntargetMedia = ntargetMediaTemp;
-								if (Integer.parseInt(args[1]) == 1) {
 
 									double maxAbsolute = getMaxAbsolute(ntargetMedia);
 									ntargetMediaTemp = new ArrayList<>();
@@ -300,61 +124,66 @@ public class Runner {
 
 									}
 									ntargetMedia = ntargetMediaTemp;
-								}
-								for (int b = 0; b < 256; b++){
-									Point p = new Point((int) (b*2),(int) (ntargetMedia.get(b).doubleValue()*multipler));
-									g.addPoint(p);
-									g2.addPoint(p);
-								}
+									Funcoes f = new Funcoes();
+									w2.addAverages("NTarget", f.getVector(ntargetMedia));
+									ntargetMedia = f.sampleReduction(ntargetMedia);
 
-								try{
+									for (int b = 0; b < 16; b++){
+										Point p = new Point((int) (b*32),(int) (ntargetMedia.get(b).doubleValue()*multipler));
+										g.addPoint(p);	
+									}
 									g.finalizeStroke();
-									String result = mcali.classify(g);
-									ntargetResults.put(result, ntargetResults.get(result) +1 );
-									totalNTar++;
-								}catch(Exception e){
+									try{
+										g.calcFeatures();
+										mcali.addExample(g);
+										w.addGesture(g);
+										totalNTar++;
 
-								}
-
-								ntargetDiv = 0;
-								ntargetMedia = new ArrayList<>();
-
-							}
-							i= i+32;
-
-						}else if (listOfTargetsNTargets.get(i) == 2  && totalTar < mc){
-							if (targetDiv < avgTarget){
-								if (targetDiv == 0){ // primeiro a entrar
-
-									targetMedia = new ArrayList<>();
-									for (int b = 0; b < 256; b++){
-										targetMedia.add(valores.get(b+i));
+									}catch(Exception e){
 
 									}
-									targetDiv++;
-								}else{ // quando é mais do que 1
+
+									ntargetDiv = 0;
+									ntargetMedia = new ArrayList<>();
+
+								}
+								i= i+32;
+								*/
+
+							}else if (listOfTargetsNTargets.get(i) == 2 && totalTar < mc){
+								if (targetDiv < avgTarget){
+									if (targetDiv == 0){ // primeiro a entrar
+
+										targetMedia = new ArrayList<>();
+										for (int b = 0; b < 256; b++){
+											targetMedia.add(valores.get(b+i));
+
+										}
+										targetDiv++;
+									}else{ // quando é mais do que 1
+										ArrayList<Double> targetMediaTemp = new ArrayList<>();
+										for (int b = 0; b < 256; b++){
+											targetMediaTemp.add(valores.get(b+i) + targetMedia.get(b));
+
+										}
+										targetMedia = targetMediaTemp;
+										targetDiv++;
+									}
+								}
+								if (targetDiv == avgTarget){ //quando o valor e chegado
+
+									NewGesture g = new NewGesture("Target");
 									ArrayList<Double> targetMediaTemp = new ArrayList<>();
-									for (int b = 0; b < 256; b++){
-										targetMediaTemp.add(valores.get(b+i) + targetMedia.get(b));
+									for ( int b = 0; b < 256; b++){
+
+										targetMediaTemp.add(targetMedia.get(b)/avgTarget);
 
 									}
 									targetMedia = targetMediaTemp;
-									targetDiv++;
-								}
-							}
-							if (targetDiv == avgTarget){ //quando o valor e chegado
-
-								NewGesture g = new NewGesture();
-								NewGesture g2 = new NewGesture("Target");
-								ArrayList<Double> targetMediaTemp = new ArrayList<>();
-								for ( int b = 0; b < 256; b++){
-
-									targetMediaTemp.add(targetMedia.get(b)/avgTarget);
-
-								}
-								targetMedia = targetMediaTemp;
-								if (Integer.parseInt(args[1]) == 1) {
-
+									double lower = new Funcoes().getLowe(targetMedia);
+									double higher = new Funcoes().getHight(targetMedia);
+									listOFTargetsPP.add(higher - lower);
+									/*
 									double maxAbsolute = getMaxAbsolute(targetMedia);
 									targetMediaTemp = new ArrayList<>();
 									for ( int b = 0; b < 256; b++){
@@ -363,56 +192,276 @@ public class Runner {
 
 									}
 									targetMedia = targetMediaTemp;
-								}
-								for (int b = 0; b < 256; b++){
-									Point p = new Point((int) (b*2),(int) (targetMedia.get(b).doubleValue()*multipler));
-									g.addPoint(p);
-									g2.addPoint(p);
-								}
-								try{
-									g.finalizeStroke();	
-									String result = mcali.classify(g);
-									targetResults.put(result, targetResults.get(result) +1 );
+									Funcoes f = new Funcoes();
+									w2.addAverages("Target", f.getVector(targetMedia));
+									targetMedia = f.sampleReduction(targetMedia);
+
+									for (int b = 0; b < 16; b++){
+										Point p = new Point((int) (b*32),(int) (targetMedia.get(b).doubleValue()*multipler));
+										g.addPoint(p);
+									}
+									try{
+										g.finalizeStroke();
+										g.calcFeatures();
+										mcali.addExample(g);
+										w.addGesture(g);
+									}catch (Exception e){
+
+									}
+									*/
 									totalTar++;
-								}catch(Exception e){
+
+									targetDiv = 0;
+									targetMedia = new ArrayList<>();
+			
 
 								}
-								targetDiv = 0;
-								targetMedia = new ArrayList<>();
-
+								i= i+32;
 
 							}
-							i= i+32;
-
 						}
 					}
-
-					double tCacl = (double)targetResults.get("Target")/ (double)(targetResults.get("Target") + targetResults.get("NTarget"));
-					double ntCacl = (double)ntargetResults.get("NTarget")/(double)(ntargetResults.get("Target") + ntargetResults.get("NTarget"));
-					int targetPercentage = (int) (tCacl * 100);
-					int ntargetPercentage = (int)(ntCacl * 100);
-
-					//System.out.println( targetPercentage + "----" + ntargetPercentage);
-					sb.append("User "+userTest+","+targetPercentage+","+ntargetPercentage+"\n");
-					//System.out.println("Foi unm");
-					//System.out.println(totalTar);
-					//System.out.println(totalNTar);
+					user++;
 
 				}
+				w.close();
 
-				pw.write(sb.toString());
-				pw.flush();
-				pw.close();
+				String path = w2.getARFFPath();
+				w2.closeArff();
 
-				avgTarget++;
-				avgNTarget = avgTarget;
-				d++;
+			//	mcali.trainClassifier();
+				//NewRecognizer mcaliMedia = new NewRecognizer("Random", new File(path));
+				double[] targetl = new double[listOFTargetsPP.size()];
+				for (int i = 0; i < targetl.length; i++) {
+					targetl[i] = listOFTargetsPP.get(i).doubleValue();
+				}
+				Arrays.sort(targetl);
+
+				int pqTarget = (targetl.length+1)/4;
+
+				double target = targetl[pqTarget];
+
+				HashMap<String, Integer> targetResults = new HashMap<>();
+				targetResults.put("Target", 0);
+				targetResults.put("NTarget", 0);
+				HashMap<String, Integer> ntargetResults = new HashMap<>();
+				ntargetResults.put("Target", 0);
+				ntargetResults.put("NTarget", 0);
+
+				HashMap<String, Integer> targetResultsMedia = new HashMap<>();
+				targetResultsMedia.put("Target", 0);
+				targetResultsMedia.put("NTarget", 0);
+				HashMap<String, Integer> ntargetResultsMedia = new HashMap<>();
+				ntargetResultsMedia.put("Target", 0);
+				ntargetResultsMedia.put("NTarget", 0);
+				HashMap<String, Integer> targetResultsPP = new HashMap<>();
+				targetResultsPP.put("Target", 0);
+				targetResultsPP.put("NTarget", 0);
+				HashMap<String, Integer> ntargetResultsPP = new HashMap<>();
+				ntargetResultsPP.put("Target", 0);
+				ntargetResultsPP.put("NTarget", 0);
+
+				listOfTargetsNTargets = new ArrayList<>();
+				ArrayList<Double> valores = getMediaElect(new File(args[0]).listFiles()[(userTest-1)]);
+				System.out.println(new File(args[0]).listFiles()[(userTest-1)].getName());
+
+				ArrayList<Double> targetMedia = new ArrayList<>();
+				ArrayList<Double> ntargetMedia = new ArrayList<>();
+
+				int ntargetDiv = 0;
+				int targetDiv = 0;
+
+				int totalTar = 0;
+				int totalNTar = 0;
+				for (int i = 0; i < listOfTargetsNTargets.size(); i++){
+
+					if (listOfTargetsNTargets.get(i) == 1 && totalNTar < mc ){
+						if (ntargetDiv < avgNTarget){
+							if (ntargetDiv == 0){ // primeiro a entrar
+
+								ntargetMedia = new ArrayList<>();
+								for (int b = 0; b < 256; b++){
+									ntargetMedia.add(valores.get(b+i));
+
+								}
+								ntargetDiv++;
+							}else{ // quando é mais do que 1
+								ArrayList<Double> ntargetMediaTemp = new ArrayList<>();
+								for (int b = 0; b < 256; b++){
+									ntargetMediaTemp.add(valores.get(b+i) + ntargetMedia.get(b));
+
+								}
+								ntargetMedia = ntargetMediaTemp;
+								ntargetDiv++;
+							}
+						}
+						if (ntargetDiv == avgNTarget){
+							NewGesture g = new NewGesture();
+							NewGesture g2 = new NewGesture("NTarget");
+							ArrayList<Double> ntargetMediaTemp = new ArrayList<>();
+							for ( int b = 0; b < 256; b++){
+
+								ntargetMediaTemp.add(ntargetMedia.get(b)/avgNTarget);
+
+							}
+							ntargetMedia = ntargetMediaTemp;
+							double lower = new Funcoes().getLowe(ntargetMedia);
+							double higher = new Funcoes().getHight(ntargetMedia);
+
+							if (higher - lower < target) {
+								ntargetResultsPP.put("NTarget", ntargetResultsPP.get("NTarget") + 1);
+							}else{
+								ntargetResultsPP.put("Target", ntargetResultsPP.get("Target") + 1);
+							}
+
+							double maxAbsolute = getMaxAbsolute(ntargetMedia);
+							ntargetMediaTemp = new ArrayList<>();
+							for ( int b = 0; b < 256; b++){
+
+								ntargetMediaTemp.add(ntargetMedia.get(b)/maxAbsolute);
+
+							}
+							ntargetMedia = ntargetMediaTemp;
+							Funcoes f = new Funcoes();
+							//String resultMedia = mcaliMedia.classify(f.getVector(ntargetMedia));
+						//	ntargetResultsMedia.put(resultMedia, ntargetResultsMedia.get(resultMedia)+1);
+
+							for (int b = 0; b < 256; b++){
+								Point p = new Point((int) (b*2),(int) (ntargetMedia.get(b).doubleValue()*multipler));
+								g.addPoint(p);
+								g2.addPoint(p);
+							}
+
+							try{
+								g.finalizeStroke();
+								String result = mcali.classify(g);
+								ntargetResults.put(result, ntargetResults.get(result) +1 );
+								totalNTar++;
+							}catch(Exception e){
+
+							}
+
+							ntargetDiv = 0;
+							ntargetMedia = new ArrayList<>();
+
+						}
+						i= i+32;
+
+					}else if (listOfTargetsNTargets.get(i) == 2  && totalTar < mc){
+						if (targetDiv < avgTarget){
+							if (targetDiv == 0){ // primeiro a entrar
+
+								targetMedia = new ArrayList<>();
+								for (int b = 0; b < 256; b++){
+									targetMedia.add(valores.get(b+i));
+
+								}
+								targetDiv++;
+							}else{ // quando é mais do que 1
+								ArrayList<Double> targetMediaTemp = new ArrayList<>();
+								for (int b = 0; b < 256; b++){
+									targetMediaTemp.add(valores.get(b+i) + targetMedia.get(b));
+
+								}
+								targetMedia = targetMediaTemp;
+								targetDiv++;
+							}
+						}
+						if (targetDiv == avgTarget){ //quando o valor e chegado
+
+							NewGesture g = new NewGesture();
+							NewGesture g2 = new NewGesture("Target");
+							ArrayList<Double> targetMediaTemp = new ArrayList<>();
+							for ( int b = 0; b < 256; b++){
+
+								targetMediaTemp.add(targetMedia.get(b)/avgTarget);
+
+							}
+							targetMedia = targetMediaTemp;
+							double lower = new Funcoes().getLowe(targetMedia);
+							double higher = new Funcoes().getHight(targetMedia);
+
+							if (higher - lower < target) {
+								targetResultsPP.put("NTarget", targetResultsPP.get("NTarget") + 1);
+							}else{
+								targetResultsPP.put("Target", targetResultsPP.get("Target") + 1);
+							}
+							double maxAbsolute = getMaxAbsolute(targetMedia);
+							targetMediaTemp = new ArrayList<>();
+							for ( int b = 0; b < 256; b++){
+
+								targetMediaTemp.add(targetMedia.get(b)/maxAbsolute);
+
+							}
+							targetMedia = targetMediaTemp;
+							Funcoes f = new Funcoes();
+
+							//String resultMedia = mcaliMedia.classify(f.getVector(targetMedia));
+							//targetResultsMedia.put(resultMedia, targetResultsMedia.get(resultMedia)+1);
+
+
+							for (int b = 0; b < 256; b++){
+								Point p = new Point((int) (b*2),(int) (targetMedia.get(b).doubleValue()*multipler));
+								g.addPoint(p);
+								g2.addPoint(p);
+							}
+							try{
+								g.finalizeStroke();	
+								String result = mcali.classify(g);
+								targetResults.put(result, targetResults.get(result) +1 );
+								totalTar++;
+							}catch(Exception e){
+
+							}
+							targetDiv = 0;
+							targetMedia = new ArrayList<>();
+
+
+						}
+						i= i+32;
+
+					}
+				}
+
+				double tCacl = (double)targetResults.get("Target")/ (double)(targetResults.get("Target") + targetResults.get("NTarget"));
+				double ntCacl = (double)ntargetResults.get("NTarget")/(double)(ntargetResults.get("Target") + ntargetResults.get("NTarget"));
+				int targetPercentage = (int) (tCacl * 100);
+				int ntargetPercentage = (int)(ntCacl * 100);
+
+
+				double tCaclMedia = (double)targetResultsMedia.get("Target")/ (double)(targetResultsMedia.get("Target") + targetResultsMedia.get("NTarget"));
+				double ntCaclMedia = (double)ntargetResultsMedia.get("NTarget")/(double)(ntargetResultsMedia.get("Target") + ntargetResultsMedia.get("NTarget"));
+				int targetPercentageMedia = (int) (tCaclMedia * 100);
+				int ntargetPercentageMedia = (int)(ntCaclMedia * 100);
+				//System.out.println( targetPercentage + "----" + ntargetPercentage);
+				sb.append("User "+userTest+","+targetPercentage+","+ntargetPercentage+"\n");
+				sb1.append("User "+userTest+","+targetPercentageMedia+","+ntargetPercentageMedia+"\n");
+
+				//System.out.println("Foi unm");
+				//System.out.println(totalTar);
+				//System.out.println(totalNTar);
+				tCacl = (double)targetResultsPP.get("Target")/ (double)(targetResultsPP.get("Target") + targetResultsPP.get("NTarget"));
+				ntCacl = (double)ntargetResultsPP.get("NTarget")/(double)(ntargetResultsPP.get("Target") + ntargetResultsPP.get("NTarget"));
+				targetPercentage = (int) (tCacl * 100);
+				ntargetPercentage = (int)(ntCacl * 100);
+				//System.out.println( targetPercentage + "----" + ntargetPercentage);
+				sb2.append("User "+userTest+","+targetPercentage+","+ntargetPercentage+"\n");
+
+
 			}
+
+			pw.write(sb.toString());
+			pw.flush();
+			pw.close();
+			pw1.write(sb1.toString());
+			pw1.flush();
+			pw1.close();
+			pw2.write(sb2.toString());
+			pw2.flush();
+			pw2.close();
+			avgTarget++;
+			avgNTarget = avgTarget;
 		}
-
-
-
-
 
 	}
 

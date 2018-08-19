@@ -38,17 +38,17 @@ public class NewWriter {
 			//fileContent += "%\n% Joao Vieira\n";
 			line += "@RELATION mCALI\n\n";
 			line += "@ATTRIBUTE class {}\n";
-	    	line += "@ATTRIBUTE rectR1 NUMERIC\n";
-	    	line += "@ATTRIBUTE rectR2 NUMERIC\n";
-	    	line += "@ATTRIBUTE rectR3 NUMERIC\n";
-	    	line += "@ATTRIBUTE eqR NUMERIC\n";
-	    	line += "@ATTRIBUTE MovY NUMERIC\n";
-	    	line += "@ATTRIBUTE chR2 NUMERIC\n";
-	    	line += "@ATTRIBUTE chR3 NUMERIC\n";
-	    	line += "@ATTRIBUTE bbchR NUMERIC\n";
-	    	line += "@ATTRIBUTE quad2FillR NUMERIC\n";
-	    	line += "@ATTRIBUTE quad3FillR NUMERIC\n";
-	    	line += "@ATTRIBUTE quad4FillR NUMERIC\n";
+			line += "@ATTRIBUTE rectR1 NUMERIC\n";
+			line += "@ATTRIBUTE rectR2 NUMERIC\n";
+			line += "@ATTRIBUTE rectR3 NUMERIC\n";
+			line += "@ATTRIBUTE eqR NUMERIC\n";
+			line += "@ATTRIBUTE MovY NUMERIC\n";
+			line += "@ATTRIBUTE chR2 NUMERIC\n";
+			line += "@ATTRIBUTE chR3 NUMERIC\n";
+			line += "@ATTRIBUTE bbchR NUMERIC\n";
+			line += "@ATTRIBUTE quad2FillR NUMERIC\n";
+			line += "@ATTRIBUTE quad3FillR NUMERIC\n";
+			line += "@ATTRIBUTE quad4FillR NUMERIC\n";
 			line += "@ATTRIBUTE astchAR NUMERIC\n";
 			line += "@ATTRIBUTE astchPR NUMERIC\n";
 			line += "@ATTRIBUTE f1 NUMERIC\n";
@@ -76,6 +76,51 @@ public class NewWriter {
 		}
 	}
 
+	public NewWriter(String path, int s) {
+		arff = new File(path + ".arff");
+		//xml = new File(path + ".xml");
+		classes = new ArrayList<String>();
+		gestID = 0;
+
+		try {
+			writerARFF = new BufferedWriter(new FileWriter(arff));
+			//writerXML = new BufferedWriter(new FileWriter(xml));
+
+			line = "% mCALI dataset\n";
+
+			//fileContent += "%\n% Joao Vieira\n";
+			line += "@RELATION mCALI\n\n";
+			line += "@ATTRIBUTE class {}\n";
+			line += "@ATTRIBUTE Average150250 NUMERIC\n";
+			line += "@ATTRIBUTE Average200300 NUMERIC\n";
+			line += "@ATTRIBUTE Average300400 NUMERIC\n";
+			line += "@ATTRIBUTE Average400500 NUMERIC\n";
+			line += "@ATTRIBUTE Average500600 NUMERIC\n";
+			line += "@ATTRIBUTE Average600700 NUMERIC\n";
+			line += "@ATTRIBUTE Average250600 NUMERIC\n";
+			line += "@ATTRIBUTE Average400600 NUMERIC\n";
+			line += "@ATTRIBUTE AverageDes150250 NUMERIC\n";
+			line += "@ATTRIBUTE AverageDes200300 NUMERIC\n";
+			line += "@ATTRIBUTE AverageDes300400 NUMERIC\n";
+			line += "@ATTRIBUTE AverageDes400500 NUMERIC\n";
+			line += "@ATTRIBUTE AverageDes500600 NUMERIC\n";
+			line += "@ATTRIBUTE AverageDes600700 NUMERIC\n";
+			line += "@ATTRIBUTE AverageDes250600 NUMERIC\n";
+			line += "@ATTRIBUTE AverageDes400600 NUMERIC\n";
+			line += "\n@DATA\n";
+
+			writerARFF.write(line);
+			writerARFF.flush();
+
+			//line = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\n<MCALI>\n";
+			//writerXML.write(line);
+			//writerXML.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void addGesture(NewGesture g) {
 		g.calcFeatures();
 		addGestureToXML(g);
@@ -83,6 +128,39 @@ public class NewWriter {
 		gestID++;
 	}
 
+	public void addAverages(String name, ArrayList<Double> averages ) {
+		if (!classes.contains(name))
+			classes.add(name);
+
+		try {
+			String fileContent = name;
+			for (int i = 0; i < averages.size(); i++) {
+				fileContent+= ","+averages.get(i);
+			}
+			
+			writerARFF.write(fileContent+"\n");
+			writerARFF.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void closeArff() {
+		try {
+			writerARFF.close();
+			addClasses();
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public String getARFFPath() {
+		return arff.getAbsolutePath();
+	}
 	public void addGestureToARFF(NewGesture g) {
 		if (!classes.contains(g.getName()))
 			classes.add(g.getName());

@@ -21,7 +21,7 @@ public class LettersCatalog {
 			}
 		}
 	}
-	
+
 	public String getLetter(int x, int y) {
 		for (CoordsSpeller c : letters) {
 			if (c.getX() == x && c.getY() == y) {
@@ -29,5 +29,32 @@ public class LettersCatalog {
 			}
 		}
 		return null;
+	}
+
+	public ArrayList<Double> getArray(int x, int y){
+		for (CoordsSpeller c : letters) {
+			if (c.getX() == x && c.getY() == y) {
+				return c.getBox();
+			}
+		}
+		return null;
+	}
+
+	public void clearArrays() {
+		for (CoordsSpeller c : letters) {
+			c.clearBox();
+		}
+	}
+
+	public void addSignal(ArrayList<Double> m, boolean first, int x, int epoch) {
+		for (CoordsSpeller c : letters) {
+			if (c.getX() == x || c.getY() == x) {
+				if (first) {
+					c.addFirst(m);
+				}else {
+					c.addSignalBox(m, epoch);
+				}
+			}
+		}
 	}
 }

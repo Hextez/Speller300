@@ -111,6 +111,9 @@ public class NewRecognizer {
 		g.calcFeatures();
 		return classifier.classify(g.getFeatures());
 	}
+	public String classify(ArrayList<Double> d) {
+		return classifier.classify(d);
+	}
 
 	public String classify(Instance test) {
 		return classifier.classify(test);

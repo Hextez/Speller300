@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
@@ -68,7 +69,8 @@ public class NewClassifying implements Serializable{
 		}else if(classifier.equalsIgnoreCase("vote2")) {
 			v.setClassifiers(new Classifier[]{new IBk(), rs, new NaiveBayes()});
 			setCurrentClassifier(v);
-
+		}else if (classifier.equalsIgnoreCase("Random")) {
+			setCurrentClassifier(new RandomForest());
 		}else if (classifier.equalsIgnoreCase("SVMRBF09")) {
 			new RBFKernel();
 			SMO sm = new SMO();
@@ -93,7 +95,7 @@ public class NewClassifying implements Serializable{
 		}else if (classifier.equalsIgnoreCase("SVMNor14")) {
 			new RBFKernel();
 			SMO sm = new SMO();
-			
+
 			NormalizedPolyKernel npk = new NormalizedPolyKernel();
 			npk.setExponent(14);
 			sm.setKernel(npk);
@@ -105,8 +107,8 @@ public class NewClassifying implements Serializable{
 			sm.setKernel(ker);
 			setCurrentClassifier(sm);
 		}
-		
-		
+
+
 		createTrainingInstances();
 		trainClassifier(training);
 	}
@@ -114,7 +116,7 @@ public class NewClassifying implements Serializable{
 	public NewClassifying(String classifier) throws Exception {
 		Vote v = new Vote();
 		v.setCombinationRule(new SelectedTag(Vote.MAJORITY_VOTING_RULE,Vote.TAGS_RULES));
-		
+
 
 		if (classifier.equalsIgnoreCase("Vote 1")) {
 			RandomSubSpace rs = new RandomSubSpace();
@@ -278,7 +280,40 @@ public class NewClassifying implements Serializable{
 		test.setValue(22, f.getAstchAB());
 		test.setValue(23, f.getRMS());
 		test.setValue(24, f.getFillingR());
-		
+
+		// Setting the header of test to be the same as the training set
+		test.setDataset(training);
+
+		try {
+			// Distribution Result
+			//			double[] results = currentClassifier.distributionForInstance(test);
+			//			System.out.println("-------------");
+			//			for (int i = 0; i < results.length; i++)
+			//				System.out.println(training.classAttribute().value((int) i) + ": " + results[i]);
+
+			// Single Result
+
+			double prediction = currentClassifier.classifyInstance(test);
+			return training.classAttribute().value((int) prediction);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+	public String classify(ArrayList<Double> list) {
+		// Create empty instance 
+		Instance test = new DenseInstance(training.numAttributes());
+
+		// Setting attributes values
+		// Index 0 is the class which is not necessary for testing
+		for (int i = 1; i < list.size() + 1; i++) {
+			test.setValue(i, list.get(i-1));
+		}
+
+
 		// Setting the header of test to be the same as the training set
 		test.setDataset(training);
 
